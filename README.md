@@ -1,7 +1,6 @@
+# 🚀 Frontend Template - Sofactia
 
-# 🚀 Frontend Template
-
-Este es el template base oficial del equipo. Configurado con **React 19**, **Vite** y un flujo de trabajo basado en **pnpm** para garantizar un rendimiento óptimo y una arquitectura escalable.
+Este es el template base oficial del equipo Sofactia. Configurado con **React 19**, **Vite** y un flujo de trabajo basado en **pnpm** para garantizar un rendimiento óptimo y una arquitectura escalable.
 
 ## 🛠 Tech Stack Principal
 
@@ -12,7 +11,9 @@ Este es el template base oficial del equipo. Configurado con **React 19**, **Vit
 * **Internacionalización:** [i18next](https://www.i18next.com/) & [react-i18next](https://react.i18next.com/).
 * **Estilos:** [Tailwind CSS 4](https://tailwindcss.com/) con integración nativa para Vite.
 * **Cliente HTTP:** [Axios](https://axios-http.com/).
-* **Iconos:** [React Icons](https://react-icons.github.io/react-icons/).
+* **Iconos:** [React Icons](https://react-icons.github.io/react-icons/) & [Lucide React](https://lucide.dev/).
+* **UI Components:** [Material UI (MUI)](https://mui.com/) & [Emotion](https://emotion.sh/).
+* **Animaciones:** [Motion](https://motion.dev/).
 
 ## 📚 Librerías Utilizadas y su Propósito
 
@@ -51,15 +52,58 @@ Este es el template base oficial del equipo. Configurado con **React 19**, **Vit
 
 ## 📂 Arquitectura de Carpetas
 
-Basado en la estructura del proyecto:
+Basado en la estructura del proyecto y siguiendo el patrón Feature-Sliced Design (FSD):
 
-* `src/api/`: Configuración y clientes de servicios externos (Axios).
-* `src/components/`: Componentes de UI reutilizables y atómicos.
-* `src/features/`: Módulos basados en dominio (lógica de negocio específica).
-* `src/providers/`: Wrappers de contexto global (Redux, I18n, Router).
-* `src/schemas/`: Esquemas de validación **Zod** para formularios y APIs.
-* `src/services/`: Definición de endpoints y lógica de fetching.
-* `src/utils/`: Helpers, formateadores y funciones puras.
+```
+src/
+├── app/
+│   ├── providers/
+│   ├── layouts/
+│   ├── pages/
+│   └── index.js
+├── entities/
+│   ├── User/
+│   ├── Product/
+│   └── ...
+├── features/
+│   ├── Auth/
+│   ├── UserProfile/
+│   └── ...
+├── shared/
+│   ├── components/
+│   ├── hooks/
+│   ├── lib/
+│   ├── ui/
+│   ├── utils/
+│   └── config/
+├── widgets/
+│   ├── Header/
+│   ├── Sidebar/
+│   └── ...
+├── services/
+│   ├── api/
+│   ├── auth/
+│   └── storage/
+├── store/
+│   ├── slices/
+│   └── index.js
+├── routes/
+├── constants/
+└── types/
+```
+
+### Descripción de Carpetas
+
+- **app/**: Configuración principal de la aplicación, layouts comunes, y punto de entrada
+- **entities/**: Entidades del dominio con su lógica de negocio (User, Product, Order, etc.)
+- **features/**: Características específicas de la aplicación (Auth, UserProfile, etc.)
+- **shared/**: Código reutilizable a través de toda la aplicación
+- **widgets/**: Componentes de interfaz reutilizables que no pertenecen a una entidad específica
+- **services/**: Lógica de comunicación con servicios externos
+- **store/**: Configuración de Redux Toolkit
+- **routes/**: Definición de rutas de la aplicación
+- **constants/**: Constantes globales
+- **types/**: Definiciones de tipos (JSDoc en lugar de TypeScript)
 
 ## 🚀 Comandos del Proyecto
 
@@ -75,26 +119,24 @@ Este proyecto utiliza **pnpm**. Por favor, no uses `npm` o `yarn` para evitar co
 | **Formatear código** | `pnpm prettier-fix` |
 | **Previsualizar Build** | `pnpm preview` |
 
-## 📚 Instalación de Librerías
+## 📝 Convenciones de Código
 
-Lista de comandos para instalar las dependencias del proyecto:
+### Nomenclatura
 
-### Dependencias principales
-```bash
-npm install -g pnpm@latest-10
-pnpm create vite@latest frontend
-pnpm install react-router-dom @reduxjs/toolkit react-redux zod react-hookform @hookform/resolvers axios i18next react-i18next react-icons
-```
+- **Archivos**: camelCase para componentes funcionales, PascalCase para archivos que exportan clases
+- **Componentes**: PascalCase
+- **Funciones y variables**: camelCase
+- **Constantes**: UPPER_SNAKE_CASE
+- **Archivos CSS**: lowercase-with-dashes.module.css
 
-### Dependencias de desarrollo
-```bash
-pnpm add -D tailwindcss @tailwindcss/vite prettier eslint-config-prettier eslint-plugin-prettier eslint-plugin-react-hooks eslint-plugin-react husky lint-staged
-```
+### Estilo de Código
 
-### Herramientas de testing
-```bash
-pnpm add -D jest jest-environment-jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
-```
+- Máximo 100 caracteres por línea
+- Indentación con 2 espacios
+- Usar siempre punto y coma
+- Usar comillas simples para cadenas
+- Usar arrow functions para componentes funcionales
+- Evitar declaración de funciones tradicionales para componentes
 
 ## 🧪 Testing
 
@@ -133,85 +175,461 @@ chmod +x .husky/*
 
 El sistema ya incluye `i18next` para el manejo de múltiples idiomas. Los archivos de traducción deben ubicarse preferiblemente en `src/assets/locales/` (o según la configuración definida en el provider de i18n).
 
-## 📝 Notas Adicionales
-
-* **Configuración de ESLint:** Utilizamos la versión 9 con soporte para React, React Hooks y Prettier.
-* **Tailwind:** Se utiliza `@tailwindcss/vite` para una compilación más rápida en el entorno de desarrollo.
-
-Para que tu equipo trabaje con estándares de alta calidad, el **README.md** debe actuar como una "Constitución". Aquí tienes las secciones clave diseñadas específicamente para tu stack (React 19, Redux, Tailwind 4) que ayudarán a mantener el código limpio y profesional.
-
----
-
 ## 💎 Guía de Desarrollo y Buenas Prácticas
 
-### 1. Estructura de un "Feature" (Módulo)
+### 1. Componentes Funcionales
 
-Para mantener el código mantenible, cada nueva funcionalidad en `src/features/` debe seguir esta estructura interna:
+```javascript
+// ✅ Correcto
+import React from 'react';
+import PropTypes from 'prop-types';
 
-* **`components/`**: Componentes exclusivos de esta funcionalidad.
-* **`hooks/`**: Lógica de React específica del módulo.
-* **`services/`**: Definición de endpoints (RTK Query o Axios).
-* **`index.js`**: El "punto de entrada" del módulo para evitar importaciones profundas.
+const Button = ({ children, variant = 'primary', onClick }) => {
+  const baseClasses = 'px-4 py-2 rounded font-medium';
+  const variantClasses = {
+    primary: 'bg-blue-500 text-white hover:bg-blue-600',
+    secondary: 'bg-gray-500 text-white hover:bg-gray-600',
+  };
 
-### 2. Principios de Clean Code
+  return (
+    <button
+      className={`${baseClasses} ${variantClasses[variant]}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
 
-* **Componentes Pequeños**: Si un componente supera las 150 líneas, es momento de dividirlo en subcomponentes más pequeños.
-* **Desacoplamiento de Lógica**: Usa la carpeta `hooks/` para extraer la lógica pesada del JSX. El componente solo debe encargarse de la interfaz.
-* **Single Source of Truth**: Las validaciones se definen **una sola vez** en `src/schemas/` usando **Zod** y se consumen tanto en formularios como en respuestas de API.
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(['primary', 'secondary']),
+  onClick: PropTypes.func,
+};
 
-### 3. Mejores Herramientas Integradas
+export default Button;
+```
 
-Este template ya incluye herramientas de nivel élite que el equipo debe aprovechar:
+### 2. Separación de Presentación y Lógica
 
-* **Tailwind CSS 4**: Utiliza el plugin nativo de Vite para compilaciones instantáneas.
-* **React Hook Form**: Minimiza las re-renderizaciones de los formularios.
-* **i18next**: Toda cadena de texto visible al usuario debe estar en los archivos de traducción, nunca "hardcoded" en el JSX.
-* **Lucide Icons / React Icons**: Mantén una estética consistente usando una sola librería de iconos.
+```javascript
+// ✅ Componente contenedor (Container)
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import UserList from '../components/UserList';
+import { fetchUsers } from '../store/usersSlice';
 
-### 4. Flujo de Git y Automatización
+const UserListContainer = () => {
+  const dispatch = useDispatch();
+  const { users, loading, error } = useSelector(state => state.users);
 
-* **Validación Pre-Commit**: No se puede subir código que rompa las reglas de estilo.
-* **Linting Estricto**: Ejecuta `pnpm lint-fix` antes de abrir un Pull Request para asegurar que el código cumple con las reglas de ESLint 9.
-* **Formateo Automático**: Gracias a **Prettier** y **Husky**, el código siempre se verá igual sin importar quién lo escriba.
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
----
+  return (
+    <UserList
+      users={users}
+      loading={loading}
+      error={error}
+    />
+  );
+};
 
-## 🛠 Guía de Implementación Rápida
+export default UserListContainer;
 
-### ¿Cómo crear una validación profesional?
+// ✅ Componente de presentación (Component)
+import React from 'react';
 
-1. Crea el esquema en `src/schemas/mi-modulo.schema.js` usando **Zod**.
-2. Importa el esquema en tu componente y conéctalo a **React Hook Form** usando el `zodResolver`.
-3. Usa el componente base `Input` que creamos para mostrar errores automáticamente.
+const UserList = ({ users, loading, error }) => {
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
-### ¿Cómo manejar el estado global?
+  return (
+    <div>
+      {users.map(user => (
+        <div key={user.id}>{user.name}</div>
+      ))}
+    </div>
+  );
+};
 
-1. Define tu logic de estado en `src/store/slices/`.
-2. Si es una petición a servidor, usa **RTK Query** en `src/services/` para aprovechar el caché automático.
+export default UserList;
+```
 
----
-Para que tu template sea verdaderamente "de élite", aquí tienes las secciones definitivas para el **README.md** (o tu archivo `guia_equipo.md`) que elevarán el estándar del equipo. Estas guías están alineadas con las librerías que ya tienes instaladas como **React 19**, **Redux Toolkit**, **Zod** y **Tailwind 4**.
+### 3. React.memo y useMemo
 
----
+```javascript
+// ✅ Usar React.memo para componentes que rara vez cambian
+import React, { memo, useMemo } from 'react';
 
-## 🛠️ Configuración de VS Code (Recomendado)
+const ExpensiveComponent = memo(({ items, filter }) => {
+  // Cálculo costoso optimizado con useMemo
+  const filteredItems = useMemo(() => {
+    return items.filter(item => item.category === filter);
+  }, [items, filter]);
 
-Para que todos vean el código igual y las herramientas funcionen al 100%, asegúrense de tener estas extensiones:
+  return (
+    <div>
+      {filteredItems.map(item => (
+        <div key={item.id}>{item.name}</div>
+      ))}
+    </div>
+  );
+});
 
-* **ESLint & Prettier**: Para validación y formato automático.
-* **Tailwind CSS IntelliSense**: Autocompletado de clases de Tailwind 4.
-* **Console Ninja**: Para ver los `console.log` directamente en el editor.
+ExpensiveComponent.displayName = 'ExpensiveComponent';
 
----
+export default ExpensiveComponent;
+```
 
-## 🧼 Reglas de Clean Code para el Equipo
+### 4. Lazy Loading y Suspense
 
-1. **Componentes Funcionales**: Usar siempre funciones de flecha (`const MyComponent = () => ...`).
-2. **Prop Drilling**: Si necesitas pasar datos a más de 2 niveles de profundidad, usa **Redux Toolkit** o un **Provider**.
-3. **Destructuración**: Siempre destructurar props y estados para mayor claridad.
-4. **Funciones de Ayuda**: Cualquier lógica de cálculo o transformación de datos debe ir en `src/utils/`. No satures el componente.
+```javascript
+// ✅ Lazy loading para rutas
+import { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
----
+const HomePage = lazy(() => import('../pages/HomePage'));
+const AboutPage = lazy(() => import('../pages/AboutPage'));
+const DashboardPage = lazy(() => import('../pages/DashboardPage'));
+
+const AppRoutes = () => (
+  <Routes>
+    <Route
+      path="/"
+      element={
+        <Suspense fallback={<div>Cargando...</div>}>
+          <HomePage />
+        </Suspense>
+      }
+    />
+    <Route
+      path="/about"
+      element={
+        <Suspense fallback={<div>Cargando...</div>}>
+          <AboutPage />
+        </Suspense>
+      }
+    />
+    <Route
+      path="/dashboard"
+      element={
+        <Suspense fallback={<div>Cargando...</div>}>
+          <DashboardPage />
+        </Suspense>
+      }
+    />
+  </Routes>
+);
+
+export default AppRoutes;
+```
+
+### 5. Manejo de Estado con Redux Toolkit
+
+```javascript
+// ✅ Slice de Redux Toolkit
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+// Thunk asíncrono
+export const fetchUsers = createAsyncThunk(
+  'users/fetchUsers',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch('/api/users');
+      if (!response.ok) {
+        throw new Error('Error al obtener usuarios');
+      }
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const usersSlice = createSlice({
+  name: 'users',
+  initialState: {
+    items: [],
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    addUser: (state, action) => {
+      state.items.push(action.payload);
+    },
+    removeUser: (state, action) => {
+      state.items = state.items.filter(user => user.id !== action.payload.id);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+export const { addUser, removeUser } = usersSlice.actions;
+export default usersSlice.reducer;
+```
+
+### 6. Formularios con React Hook Form y Zod
+
+```javascript
+// ✅ Formulario con React Hook Form y Zod
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+const userSchema = z.object({
+  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+  email: z.string().email('Email inválido'),
+  age: z.number().min(18, 'Debes ser mayor de edad').max(120, 'Edad inválida'),
+});
+
+const UserForm = ({ onSubmit, defaultValues }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm({
+    resolver: zodResolver(userSchema),
+    defaultValues,
+  });
+
+  const onSubmitHandler = async (data) => {
+    try {
+      await onSubmit(data);
+      reset();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmitHandler)}>
+      <div>
+        <label htmlFor="name">Nombre</label>
+        <input
+          id="name"
+          {...register('name')}
+          className={errors.name ? 'border-red-500' : ''}
+        />
+        {errors.name && <span className="text-red-500">{errors.name.message}</span>}
+      </div>
+
+      <div>
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          {...register('email')}
+          className={errors.email ? 'border-red-500' : ''}
+        />
+        {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+      </div>
+
+      <div>
+        <label htmlFor="age">Edad</label>
+        <input
+          id="age"
+          type="number"
+          {...register('age', { valueAsNumber: true })}
+          className={errors.age ? 'border-red-500' : ''}
+        />
+        {errors.age && <span className="text-red-500">{errors.age.message}</span>}
+      </div>
+
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Enviando...' : 'Enviar'}
+      </button>
+    </form>
+  );
+};
+
+export default UserForm;
+```
+
+### 7. Servicios de API con Axios
+
+```javascript
+// ✅ Servicio de API centralizado
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interceptor para añadir token de autenticación
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Interceptor para manejar errores
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Manejar sesión expirada
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
+```
+
+### 8. Componentes con Material UI y Emotion
+
+```javascript
+// ✅ Componente con MUI y Emotion
+import React from 'react';
+import { Button, Card, CardContent, Typography } from '@mui/material';
+import { styled } from '@emotion/react';
+
+const StyledCard = styled(Card)`
+  margin: 1rem;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: 1rem;
+`;
+
+const MuiCard = ({ title, content, onClick }) => {
+  return (
+    <StyledCard>
+      <CardContent>
+        <Typography variant="h5" component="h2">
+          {title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {content}
+        </Typography>
+        <StyledButton 
+          variant="contained" 
+          color="primary" 
+          onClick={onClick}
+        >
+          Acción
+        </StyledButton>
+      </CardContent>
+    </StyledCard>
+  );
+};
+
+export default MuiCard;
+```
+
+### 9. Animaciones con Motion
+
+```javascript
+// ✅ Componente con animaciones
+import React from 'react';
+import { motion } from 'motion';
+
+const AnimatedCard = ({ children, delay = 0 }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export default AnimatedCard;
+```
+
+## 🏗️ Patrones Comunes en Aplicaciones de Producción
+
+### 1. Patrón Container/Component
+```javascript
+// ✅ Container: Maneja la lógica de estado y efectos
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../store/productsSlice';
+import ProductsList from '../components/ProductsList';
+
+const ProductsContainer = () => {
+  const dispatch = useDispatch();
+  const { products, loading, error } = useSelector(state => state.products);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  return (
+    <ProductsList
+      products={products}
+      loading={loading}
+      error={error}
+    />
+  );
+};
+
+export default ProductsContainer;
+```
+
+### 2. Custom Hooks
+```javascript
+// ✅ Custom hook para manejo de estado local
+import { useState, useEffect } from 'react';
+
+export const useLocalStorage = (key, initialValue) => {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(`Error reading localStorage key "${key}":`, error);
+      return initialValue;
+    }
+  });
+
+  const setValue = (value) => {
+    try {
+      setStoredValue(value);
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error);
+    }
+  };
+
+  return [storedValue, setValue];
+};
+```
 
 ## 🚨 Guía de Manejo de Errores y Validaciones
 
@@ -221,17 +639,6 @@ En este proyecto, **Zod** es nuestra muralla de seguridad:
 * **Tipado Dinámico**: Aunque no usamos TypeScript por requerimiento del cliente, usamos `z.infer` en los esquemas para documentar la forma de los datos.
 * **Validación de API**: Al recibir datos de **Axios**, opcionalmente usamos `.safeParse()` de Zod para asegurar que el backend no envíe datos corruptos que rompan la UI.
 
----
-
-## 🚀 Buenas Prácticas con React 19 y Redux
-
-* **Hooks sobre Clases**: Uso exclusivo de Hooks (`useState`, `useEffect`, `useMemo`).
-* **Acciones Descriptivas**: En Redux, los nombres de las acciones deben ser legibles, ej: `user/loginSuccess`.
-* **Cero Lógica en JSX**: El bloque `return` debe ser lo más limpio posible. Si tienes condicionales complejos, prepáralos en variables antes del `return`.
-* **Internacionalización**: No escribir texto directo. Usar siempre el hook `useTranslation` de `react-i18next` para mantener el soporte multi-idioma.
-
----
-
 ## 🏁 Checkpoint de Calidad (Antes de un Pull Request)
 
 Antes de enviar código, el desarrollador debe confirmar:
@@ -240,11 +647,8 @@ Antes de enviar código, el desarrollador debe confirmar:
 2. [ ] ¿He verificado que los mensajes de commit sigan el estándar de **Husky**?
 3. [ ] ¿Los nuevos esquemas de validación están en la carpeta `src/schemas/`?
 4. [ ] ¿He actualizado las traducciones en `i18n` si añadí texto nuevo?
-
----
-Para cerrar con broche de oro, aquí tienes una guía de **"Refactorización y Código Limpio"** que puedes incluir en tu `guia_equipo.md`. Esta sección es vital porque enseña visualmente la diferencia entre un código "que funciona" y un código "profesional" siguiendo tu stack técnico.
-
----
+5. [ ] ¿He probado el componente en diferentes tamaños de pantalla?
+6. [ ] ¿He agregado pruebas unitarias para la nueva funcionalidad?
 
 ## 🧼 Antes vs. Después: La mentalidad del Template
 
@@ -272,7 +676,6 @@ const UserForm = () => {
     </div>
   );
 };
-
 ```
 
 ### ✅ El Código "Limpio" (Uso correcto del Template)
@@ -285,9 +688,7 @@ import { z } from 'zod';
 export const userSchema = z.object({
   name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
 });
-
 ```
-
 
 2. **Componente Refactorizado (en `src/features/users/UserForm.jsx`):**
 ```jsx
@@ -316,10 +717,10 @@ export const UserForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-6">
-      <Input 
+      <Input
         label="Nombre Completo"
         error={errors.name?.message}
-        {...register('name')} 
+        {...register('name')}
       />
       <button disabled={isLoading} className="btn-primary">
         {isLoading ? 'Guardando...' : 'Enviar'}
@@ -327,12 +728,7 @@ export const UserForm = () => {
     </form>
   );
 };
-
 ```
-
-
-
----
 
 ## 💪 Fortalezas del Diseño del Template
 
@@ -366,8 +762,6 @@ export const UserForm = () => {
 * **Mantenibilidad del código:** La separación de responsabilidades y las validaciones claras facilitan la evolución del proyecto.
 * **Rendimiento óptimo:** Tanto en desarrollo (con Vite) como en producción (con builds optimizados).
 * **Escalabilidad:** La arquitectura está diseñada para crecer desde proyectos pequeños hasta aplicaciones empresariales.
-
----
 
 ## 🏆 Resumen de Beneficios para el Cliente
 
