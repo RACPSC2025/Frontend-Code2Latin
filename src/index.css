@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* aqui añadir variables de tema personalizadas por la empresa */
+@theme {
+  --color-brand: #3b82f6;
+  --font-display: "Inter", sans-serif;
+}
