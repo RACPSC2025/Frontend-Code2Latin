@@ -1,0 +1,36 @@
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: inherit !important;
+}
+
+.fc .fc-daygrid-day-frame {
+  cursor: pointer;
+}
+
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  border-radius: 50%;
+  background-color: #19aabb;
+  color: white;
+  font-weight: bold;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 2px 0 0;
+}
+
+.fc .fc-highlight {
+  background: #eff7f9;
+  border: solid 1px #19aabb;
+}
+
+.message-center-fc-more-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgrey;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+}

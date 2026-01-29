@@ -1,0 +1,12 @@
+Options -MultiViews
+RewriteEngine On
+
+# Set the base path to the subdirectory
+RewriteBase /ambiental/message-center/
+
+# Check if the requested file exists, if not, serve index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
+
+# Corrige MIME type para archivos .mjs (workers de pdfjs)
+AddType application/javascript .mjs

@@ -1,0 +1,249 @@
+/* This will work for webkit browsers */
+::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the tracking area */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* color of the scroll thumb */
+  border-radius: 6px; /* roundness of the scroll thumb */
+  border: 3px solid #f1f1f1; /* creates padding around scroll thumb */
+}
+
+/* This will work for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* You can add :hover styles for the thumb as well */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* color of the scroll thumb when hovered over */
+}
+
+.mc-text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mc-layout-expanded-navbar .MuiTypography-caption {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.mc-layout-expanded-navbar .MuiTextField-root:hover {
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.mc-layout-expanded-navbar .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.87);
+}
+
+.mc-layout-expanded-navbar .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.mc-layout-expanded-navbar .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: white;
+}
+
+.mc-layout-expanded-navbar .MuiOutlinedInput-input::placeholder {
+  color: #fff;
+}
+
+.mc-layout-expanded-navbar .MuiOutlinedInput-input {
+  caret-color: #fff;
+  color: #fff;
+}
+
+.MuiOutlinedInput-input,
+.MuiOutlinedInput-input:focus {
+  box-shadow: none !important;
+}
+
+.mc-layout-expanded-navbar .MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mc-layout-expanded-navbar .MuiSelect-icon {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.mc-layout-expanded-navbar .MuiInputLabel-root.Mui-focused {
+  color: #fff;
+}
+
+.mc-layout-expanded-navbar .MuiSvgIcon-root {
+  height: 17px;
+  width: 17px;
+  color: #fff;
+}
+
+.mc-custom-row {
+  cursor: pointer;
+}
+.mc-outline-none {
+  outline: none !important;
+}
+
+/* Calender CSS */
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: inherit !important;
+}
+
+.fc .fc-daygrid-day-frame {
+  cursor: pointer;
+}
+
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  border-radius: 50%;
+  background-color: #19aabb;
+  color: white;
+  font-weight: bold;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 2px 0 0;
+}
+
+.fc .fc-highlight {
+  background: #eff7f9;
+  border: solid 1px #19aabb;
+}
+
+.message-center-fc-more-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgrey;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+}
+
+/* -------- */
+.mc-custom-row.MuiDataGrid-row .MuiDataGrid-cell {
+  position: relative;
+}
+
+/* AG Grid CSS */
+.ag-root-wrapper {
+  border-radius: 5px;
+}
+
+.ag-header-cell-comp-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ag-header-cell-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ag-header-row,
+.ag-header-row-column {
+  background-color: white;
+}
+
+.group-ag-header {
+  border-right: 1px solid rgb(229 231 235 / var(--tw-bg-opacity, 1));
+  background-color: white;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+}
+
+.default-ag-header {
+  background-color: white;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+  text-align: left;
+}
+
+.row-ag-class {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+  color: 'rgb(31 41 55 / var(--tw-bg-opacity, 1))';
+}
+
+.ag-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+}
+
+.badge.MuiButton-root,
+.badge.MuiTypography-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 60%;
+  height: 60%;
+  color: #fff;
+  border-radius: 20px;
+  padding: 4px;
+  font-size: 12px;
+  /* background-color: #00b2aa; */
+}
+
+.checkbox {
+  font-size: 16px;
+  user-select: none;
+  min-height: 320px;
+  /* padding: 20px; */
+  box-sizing: content-box;
+  width: 100%;
+}
+
+.checkbox .tree,
+.checkbox .tree-node,
+.checkbox .tree-node-group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.checkbox .tree-branch-wrapper,
+.checkbox .tree-node__leaf {
+  outline: none;
+}
+
+.checkbox .tree-node {
+  cursor: pointer;
+}
+
+.checkbox .tree-node {
+  display: inline-block;
+}
+
+.checkbox .checkbox-icon {
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.checkbox button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.jexcel tbody tr:nth-child(even) {
+  background-color: rgb(249, 250, 251);
+}
+
+.jexcel_container td.readonly {
+  color: black !important;
+  opacity: 1 !important;
+  background-color: white !important;
+}

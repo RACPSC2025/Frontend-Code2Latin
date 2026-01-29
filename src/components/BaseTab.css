@@ -1,0 +1,16 @@
+.mc-tab.MuiTabs-root {
+  min-height: 35px;
+  width: 100%;
+}
+
+.mc-tab .MuiTab-root {
+  min-height: 35px;
+}
+
+.mc-tab .MuiTabs-flexContainer {
+  padding: 0 20px;
+}
+
+.mc-tab .MuiTabs-indicator {
+  height: 3px;
+}

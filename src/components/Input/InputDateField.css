@@ -1,0 +1,16 @@
+.mc-date-picker .MuiInputBase-input {
+  padding: 8.5px 14px;
+}
+
+.mc-date-picker .MuiInputLabel-root {
+  transform: translate(14px, 10px) scale(1);
+}
+
+.mc-date-picker .MuiInputLabel-root.MuiInputLabel-shrink {
+  transform: translate(14px, -7.5px) scale(0.75);
+}
+
+.mc-date-picker .MuiSvgIcon-root {
+  height: 17px;
+  width: 17px;
+}

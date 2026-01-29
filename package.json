@@ -1,0 +1,99 @@
+{
+  "name": "outlook-message-center",
+  "version": "0.3.6",
+  "homepage": "ambiental/message-center",
+  "private": true,
+  "proxy": "https://ocensacentral.dev.sofacto.info/ambiental/",
+  "dependencies": {
+    "@apollo/client": "^3.13.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/react": "^6.1.9",
+    "@headlessui/react": "^2.2.8",
+    "@lexical/react": "^0.14.3",
+    "@mui/icons-material": "^5.14.7",
+    "@mui/material": "^5.14.7",
+    "@mui/x-date-pickers": "^6.13.0",
+    "@reduxjs/toolkit": "^2.1.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "ag-grid-community": "^33.0.3",
+    "ag-grid-react": "^33.0.3",
+    "chart.js": "^4.4.0",
+    "dayjs": "^1.11.9",
+    "echarts": "^5.5.1",
+    "echarts-for-react": "^3.0.2",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
+    "framer-motion": "^12.23.24",
+    "graphql": "^16.10.0",
+    "http-proxy-middleware": "^3.0.3",
+    "i18next": "^23.5.1",
+    "jquery": "^3.7.1",
+    "js-cookie": "^3.0.5",
+    "jspreadsheet-ce": "^4.15.0",
+    "jstree": "^3.3.17",
+    "jsuites": "^5.9.0",
+    "lexical": "^0.14.3",
+    "pdfjs-dist": "^5.4.296",
+    "radash": "^11.0.0",
+    "react": "^18.2.0",
+    "react-accessible-treeview": "^2.9.0",
+    "react-axios": "^2.0.6",
+    "react-chartjs-2": "^5.2.0",
+    "react-checkbox-tree": "^1.8.0",
+    "react-country-flag": "^3.1.0",
+    "react-dom": "^18.2.0",
+    "react-flags-select": "^2.2.3",
+    "react-hook-form": "^7.53.2",
+    "react-i18next": "^13.2.2",
+    "react-icons": "^5.5.0",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.20.0",
+    "react-scripts": "5.0.1",
+    "react-signature-canvas": "^1.0.6",
+    "react-textarea-autosize": "^8.5.9",
+    "react-toastify": "^11.0.2",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "set HTTPS=true && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "postinstall": "copy node_modules\\pdfjs-dist\\build\\pdf.worker.min.mjs public\\"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^3.4.17"
+  }
+}

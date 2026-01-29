@@ -1,0 +1,25 @@
+/* ChartComponent.module.css */
+.containerdoughnut {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .chart {
+    z-index: 1000;
+  }
+  
+  .requirementsText {
+    text-align: center;
+    position: absolute;
+    margin-top: -1.5rem;
+    color: white;
+  }
+  
+  .articlesText {
+    position: absolute;
+    padding-top: 3rem;
+    color: white important;
+  }
