@@ -14,8 +14,9 @@ import {
   setActiveModule
 } from '../stores/globalDataSlice';
 
-const MessageCenterEvents = lazy(() => import('../features/MessageCenterEvents'));
-const MessageCenterActions = lazy(() => import('../features/MessageCenterActions'));
+import LoginPage from '../features/auth/LoginPage';
+import ProtectedRoute from './ProtectedRoute';
+
 const Findings = lazy(() => import('../features/findings/Findings'));
 const MessageCenterLegalMatrix = lazy(() => import('../features/MessageCenterLegalMatrix'));
 const Tasks = lazy(() => import('../features/tasks/Tasks'));
@@ -57,18 +58,9 @@ export default function RoutesFile() {
     dispatch(fetchRegions());
   }, [dispatch]);
 
-  /*
-  useEffect(() => {
-    dispatch(fetchUserDetails('userId')).then((result) => {
-      console.log('fetchUserDetails result:', result);
-      console.log('User Details:', result.payload);
-    });
-    dispatch(fetchRegions());
-  }, [dispatch]);
-  */
-
   useEffect(() => {
     const { pathname } = location;
+    if (pathname === '/login') return; // Skip for login page
     const pathnameArr = pathname.split('/');
     const pathKey = pathnameArr.pop().trim();
     if (pathKey) {
@@ -89,24 +81,33 @@ export default function RoutesFile() {
   return (
     <Suspense fallback={<TheFullPageLoader />}>
       <GlobalConfig.Provider value={config}>
-        <TheLayout>
-          <Routes>
-            <Route path="/" element={<Navigate to={defaultRoute} replace />} />
-            <Route path="/view" element={<MessageCenter />}>
-              <Route index element={<Navigate to={defaultRoute} replace />} />
-
-              {permitRoutes
-                .filter((permission) => permission.visibility !== false) // Filter out modules with visibility: false
-                .map((permission) => (
-                  <Route
-                    key={permission.moduleName}
-                    path={permission.moduleName}
-                    element={componentMapping[permission.moduleName]}
-                  />
-                ))}
-            </Route>
-          </Routes>
-        </TheLayout>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <TheLayout>
+                  <Routes>
+                    <Route path="/" element={<Navigate to={defaultRoute} replace />} />
+                    <Route path="/view" element={<MessageCenter />}>
+                      <Route index element={<Navigate to={defaultRoute} replace />} />
+                      {permitRoutes
+                        .filter((permission) => permission.visibility !== false)
+                        .map((permission) => (
+                          <Route
+                            key={permission.moduleName}
+                            path={permission.moduleName}
+                            element={componentMapping[permission.moduleName]}
+                          />
+                        ))}
+                    </Route>
+                  </Routes>
+                </TheLayout>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </GlobalConfig.Provider>
     </Suspense>
   );

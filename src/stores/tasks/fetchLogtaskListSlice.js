@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '../../lib/axios';
+import { mockTasksAPI } from './mockTaskData';
+
+// TOGGLE THIS TO SWITCH BETWEEN MOCK AND REAL API
+const USE_MOCK_DATA = true;
 
 const initialState = {
   loading: false,
@@ -12,8 +16,14 @@ export const fetchLogtaskList = createAsyncThunk(
   async (data = {}, { rejectWithValue }) => {
     const { task_id } = data;
     try {
-      const response = await axiosInstance.post(`/tasklist_api/list_logtasks/${parseInt(task_id)}`);
-      return response?.data;
+      if (USE_MOCK_DATA) {
+        console.log("🎭 Using MOCK data for fetchLogtaskList");
+        const mockResponse = await mockTasksAPI.listLogtasks(task_id);
+        return mockResponse;
+      } else {
+        const response = await axiosInstance.post(`/tasklist_api/list_logtasks/${parseInt(task_id)}`);
+        return response?.data;
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }

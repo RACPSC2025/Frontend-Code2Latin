@@ -127,6 +127,9 @@ const globalDataSlice = createSlice({
       const { module } = action.payload;
       if (module) state.activeModule = module;
     },
+    setUserDetails: (state, action) => {
+      state.userDetails = action.payload;
+    },
     toggleShouldCreateNewAction: (state, action) => {
       const { status } = action.payload;
       state.shouldCreateNewAction = status;
@@ -164,6 +167,6 @@ const globalDataSlice = createSlice({
   }
 });
 
-export const { setActiveModule, toggleShouldCreateNewAction } = globalDataSlice.actions;
+export const { setActiveModule, setUserDetails, toggleShouldCreateNewAction } = globalDataSlice.actions;
 
 export default globalDataSlice.reducer;

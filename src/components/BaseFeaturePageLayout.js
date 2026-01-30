@@ -40,17 +40,20 @@ function BaseFeaturePageLayout({ children, showFooter = true, statsConfig = null
             height: `${footerHeight}px`,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-end',
-            pr: 2
+            justifyContent: 'space-between',
+            px: 3,
+            background: 'linear-gradient(135deg, #f8fbfc 0%, #ffffff 100%)',
+            borderTop: '1px solid #edf2f4',
+            boxShadow: '0 -2px 8px rgba(0,0,0,0.02)'
           }}
         >
           {isStatsAvailable && (
             <Box
               sx={{
                 width: {
-                  lg: '40%', // On 1280px width, make it 40%
-                  xl: '45%', // On 1366px width, make it 45%
-                  xxl: '50%' // On 1920px width and above, make it 50%
+                  lg: '40%',
+                  xl: '45%',
+                  xxl: '50%'
                 },
                 display: 'flex',
                 alignItems: 'center',
@@ -80,11 +83,41 @@ function BaseFeaturePageLayout({ children, showFooter = true, statsConfig = null
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
+              gap: 1,
               ...poweredByDynamicStyleAttrs
             }}
           >
-            <Typography variant="body2" fontWeight={500}>
-              Powered by AMATIA Sofactia
+            <Box
+              sx={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                bgcolor: '#00f57a',
+                boxShadow: '0 0 8px rgba(0, 245, 122, 0.4)'
+              }}
+            />
+            <Typography 
+              sx={{ 
+                fontSize: '0.75rem', 
+                fontWeight: 600, 
+                color: '#90a4ae',
+                letterSpacing: '0.5px',
+                textTransform: 'uppercase'
+              }}
+            >
+              Powered by
+            </Typography>
+            <Typography 
+              sx={{ 
+                fontSize: '0.85rem', 
+                fontWeight: 800, 
+                background: 'linear-gradient(135deg, #1a90ff 0%, #00bcd4 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '0.3px'
+              }}
+            >
+              AMATIA Sofactia
             </Typography>
           </Box>
         </Box>

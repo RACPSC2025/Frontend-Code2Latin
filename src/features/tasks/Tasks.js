@@ -39,7 +39,8 @@ import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import BaseFeaturePageLayout from '../../components/BaseFeaturePageLayout';
-import SpeedDialComponent from '../../components/SpeedDialComponent';
+// SpeedDialComponent ubicado en Task.js (Boton Flotante) - Comentado temporalmente
+// import SpeedDialComponent from '../../components/SpeedDialComponent';
 import { STATUS } from '../../config/constants';
 import { useLanguage } from '../../providers/languageProvider';
 import { fetchEventsList } from '../../stores/events/fetchEventsListSlice';
@@ -65,6 +66,7 @@ import TaskDetailsDrawer from './TaskDetailsDrawer';
 import TaskGroupList from './TaskGroupList';
 import TaskReport from './TaskReport';
 import TaskTableList from './TaskTableList';
+import TasksListView from './TasksListView';
 import UpcomingTaskList from './UpcomingTaskList';
 //import { selectAppliedFilterModel } from '../../stores/filterSlice';
 //import { setSelectedStatus } from '../redux/statusSlice'; // Asegúrate de definir esta acción en tu Redux slice
@@ -98,6 +100,7 @@ export default function Component() {
   const [selectedDate, setSelectedDate] = useState(getCurrentDate());
   const [events, setEvents] = useState([]);
   const [openCreateTask, setOpenCreateTask] = useState(false);
+  const [selectedTaskType, setSelectedTaskType] = useState(null);
   
   // selectedView have "report" as default value
   const [selectedView, setSelectedView] = useState('list'); // ['calendar', 'list', 'table', 'report', 'insights', 'settings'
@@ -377,11 +380,14 @@ export default function Component() {
     setDrawerOpen(true);
   };
 
+  // SpeedDialComponent ubicado en Task.js (Boton Flotante) - Comentado temporalmente
+  /*
   const speedDialActions = [
-    { icon: <DownloadDone />, name: 'Añadir Tarea Permanente' },
-    { icon: <Loop />, name: 'Añadir Tarea Cíclica' },
-    { icon: <AssignmentReturned />, name: 'Añadir Tarea Única' }
+    { icon: <DownloadDone />, name: 'Añadir Tarea Permanente', type: 'permanente' },
+    { icon: <Loop />, name: 'Añadir Tarea Cíclica', type: 'ciclica' },
+    { icon: <AssignmentReturned />, name: 'Añadir Tarea Única', type: 'unica' }
   ];
+  */
 
   const [countrySelected, setCountrySelected] = useState("CO");
 
@@ -498,136 +504,114 @@ export default function Component() {
   };
   
   return (
-    // bg-[#f5f5f5]
-    <Box className=" py-2">
-      <Box className="xl:flex items-center justify-between gap-6 w-full py-2 mb-2 px-5">
-        <Box className="flex items-center justify-center gap-6">
-          {/* Country selector 
-          <FormControl size="small" sx={{ minWidth: 200, marginBottom: -1 }}>
-            <ReactFlagsSelect
-                selected={countrySelected}
-                onSelect={(code) => setCountrySelected(code)}
-                //countries={["CO", "PA", "PE"]}
-                countries={["CO"]}
-                placeholder={t('Country')}
-                searchable
-                searchPlaceholder={t('Search country')}
-                disabled={false}
-              />
-          </FormControl>
-          */}
-          {
-          // filter of structure levels
-          <Box display="flex" justifyContent="start" gap={1} alignItems="center" flexGrow={1}>
-            {filterArray?.map((filter, filterIndex) => {
-              return (
-                <FormControl sx={{ minWidth: 100 }} size="small" key={filterIndex}>
-                  <InputLabel id={filter?.id}>{t(filter?.label)}</InputLabel>
-                  <Select
-                    labelId={filter?.id}
-                    id={filter?.id}
-                    value={filter?.value}
-                    disabled={filter?.isDisabled}
-                    onChange={(e) => filter?.handleChange(e.target.value)}
-                  >
-                    {filter?.options.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              );
-            })}
-
-            <Button variant="outlined" color="primary" onClick={handleClearFilters}>
-              {t('clear_filters')}
-            </Button>
-          </Box>
-          }
+    <Box sx={{ width: '100%', py: 1 }}>
+      {/* Barra de Filtros y Navegación de Vistas (Estilo Imagen 1 & 2) */}
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between', 
+        px: 3, 
+        py: 1,
+        bgcolor: 'white',
+        borderBottom: '1px solid #edf2f4',
+        mb: 0.5
+      }}>
+        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+          {filterArray.map((filter, index) => (
+            <FormControl key={index} size="small" sx={{ minWidth: 140 }}>
+              <Select
+                id={filter.id}
+                value={filter.value}
+                displayEmpty
+                disabled={filter.isDisabled}
+                onChange={(e) => filter.handleChange(e.target.value)}
+                sx={{ 
+                  height: '40px', 
+                  borderRadius: '6px',
+                  '& .MuiOutlinedInput-notchedOutline': { borderColor: '#e0e6ed' },
+                  color: filter.value ? '#263238' : '#90a4ae',
+                  fontSize: '0.85rem'
+                }}
+                renderValue={(selected) => {
+                  if (!selected) return <span style={{ color: '#90a4ae' }}>{t(filter.label)}</span>;
+                  return filter.options.find(opt => opt.value === selected)?.label || selected;
+                }}
+              >
+                {filter.options.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ))}
+          <Button 
+            variant="outlined" 
+            size="small" 
+            onClick={handleClearFilters}
+            sx={{ 
+              fontWeight: 800, 
+              color: '#00bcd4', 
+              borderColor: '#00bcd480', 
+              textTransform: 'none',
+              px: 2,
+              height: '40px',
+              borderRadius: '6px',
+              fontSize: '0.75rem',
+              '&:hover': { borderColor: '#00bcd4', bgcolor: 'rgba(0,188,212,0.04)' }
+            }}
+          >
+            {t('LIMPIAR FILTROS')}
+          </Button>
         </Box>
 
-        <Box className="flex gap-6 mt-2 xl:mt-0">
-          {viewTabArray?.map((viewTab, index) => (
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: viewTab !== 'adjustments' ? 'pointer' : 'default'
-              }}
-              //onClick={() => {
-              onClick={(e) => {
-                if (viewTab === 'dashboard') {
-                  window.open(
-                    'https://dev.sofacto.info/ocensa_amb/dashboard-center/html/',
-                    '_blank'
-                  );
-                } 
-                else if (viewTab === 'adjustments') {
-                  handleOpenAdjustments(e);
-                } else {
-                  changeView(viewTab);
-                }
-              }}
-            >
-              {iconMapping(viewTab, selectedView)}
-              <Typography variant="h8">{t(viewTab)}</Typography>
-            </Box>
-          ))}
+        <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-end', pb: 0.5 }}>
+          {viewTabArray.map((viewTab) => {
+            const isActive = selectedView === viewTab;
+            return (
+              <Box
+                key={viewTab}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  '&:hover': { opacity: 1 }
+                }}
+                onClick={() => changeView(viewTab)}
+              >
+                <Box sx={{ color: isActive ? '#f57c00' : '#b0bec5', mb: 0.2 }}>
+                  {iconMapping(viewTab, selectedView)}
+                </Box>
+                <Typography sx={{ 
+                  fontSize: '0.7rem', 
+                  fontWeight: 800, 
+                  color: isActive ? '#263238' : '#b0bec5',
+                  textTransform: 'capitalize' 
+                }}>
+                  {t(viewTab)}
+                </Typography>
+              </Box>
+            );
+          })}
         </Box>
       </Box>
-
-      {/* Settings menu */}
-      <Menu
-        anchorEl={adjustmentAnchorEl}
-        open={Boolean(adjustmentAnchorEl)}
-        onClose={handleCloseAdjustments}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <MenuItem disableRipple>
-          <div className="flex items-center cursor-default">
-            <Checkbox
-              checked={selectedColumns}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSetFilterItemValue('task', 'selectedColumns', !selectedColumns);
-              }}
-              className="mr-2 cursor-pointer" // cursor sólo sobre el checkbox
-            />
-            <span>{t('Select_columns')}</span>
-          </div>
-        </MenuItem>
-      </Menu>
 
       {selectedView === 'report' ? (
         <TaskReport />
       ) : selectedView === 'calendar' ? (
         <Box className="w-full px-1 py-3 overflow-hidden">
           <div className="flex flex-col lg:flex-row gap-4">
-            {/* Columna izquierda: TaskCalendar */}
             <div className="w-full lg:w-1/2">
               <TaskCalender
                 events={events}
                 language={language}
-                handleDateClick={(arg) => {
-                  setSelectedDate(dayjs(arg.dateStr));
-                }}
+                handleDateClick={(arg) => setSelectedDate(dayjs(arg.dateStr))}
                 handleEventClick={handleEventClick}
                 initialDate={selectedDate.format('YYYY-MM-DD')}
               />
             </div>
-
-            {/* Columna derecha: DayTaskList y UpcomingTaskList */}
             <div className="w-full lg:w-1/2 space-y-4">
               <DayTaskList
                 eventDate={formatDayjs(selectedDate, 'ddd, MMM DD')}
@@ -639,79 +623,33 @@ export default function Component() {
           </div>
         </Box>
       ) : (
-        <BaseFeaturePageLayout showFooter={false}>
-          <Box className="px-2 py-3 w-[60%] min-h-full flex-grow h-[calc(100vh-9rem)]">
+        <BaseFeaturePageLayout showFooter={true}>
+          <Box className="px-0 py-0 w-full min-h-full flex-grow">
             <Box
               ref={calendarContainerRef}
               sx={{
-                width: '98%',
+                width: '100%',
                 minHeight: '100%',
-                bgcolor: 'background.white',
-                borderRadius: 1,
-                border: 1,
-                borderColor: 'grey.300',
-                p: 1
+                bgcolor: 'white',
+                p: 0
               }}
             >
-              <Box display="flex" justifyContent="space-between" margin="10px" sx={{ pb: 2 }}>
-                <Box display="flex" alignItems="center">
-                  <ArrowDownward color="warning" />
-
-                  <FormControl sx={{ width: 150 }}>
-                    <InputLabel>{t("Status")}</InputLabel>
-                    <Select
-                      //value={statusOptions[currentStatus].value}
-                      value={currentStatus}
-                      onChange={handleChangeStatus}
-                      input={<OutlinedInput label= {t("All")} />}
-                      //renderValue={() => t("Selected_columns") } // Texto fijo en vez de mostrar los valores
-                    >
-                      {statusOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {t(option.label)}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-
-                  {/* 
-                  <Select 
-                    value={currentStatus} 
-                    onChange={handleChangeStatus} sx={{ ml: 1 }}
-                    label= "All"
-                    input={<OutlinedInput label= {t("All")} />}>
-                    {statusOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  */}
-
-                </Box>
-                
-                <Box sx={{ px: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  {/* AI Button create task */}
-                  <AIActionButton
-                    title={t('Crear tarea')}
-                    description={t('Describe la tarea que vas a crear.')}
-                    button1_text={t('Crear')}
-                    button2_text={t('Crear con IA')}
-                    createNewAction={null} 
-                  />
-                </Box>
-              </Box>
               {selectedView === 'list' ? (
-                <TaskGroupList />
+                <TasksListView
+                  onCreateTask={(taskType) => {
+                    // Guardamos el tipo de tarea seleccionado
+                    setSelectedTaskType(taskType);
+                    // Abrimos el formulario de creación
+                    setOpenCreateTask(true);
+                  }}
+                />
               ) : selectedView === 'table' ? (
                 <TaskTableList />
               ) : (
                 <TaskCalender
                   events={events}
                   language={language}
-                  handleDateClick={(arg) => {
-                    setSelectedDate(dayjs(arg.dateStr));
-                  }}
+                  handleDateClick={(arg) => setSelectedDate(dayjs(arg.dateStr))}
                   handleEventClick={handleEventClick}
                   initialDate={selectedDate.format('YYYY-MM-DD')}
                 />
@@ -719,30 +657,30 @@ export default function Component() {
             </Box>
           </Box>
 
-          {selectedView === 'calendar' && (
-            <Box className="w-full lg:w-[50%] px-1 py-3 overflow-hidden">
-              <DayTaskList
-                eventDate={formatDayjs(selectedDate, 'ddd, MMM DD')}
-                eventList={allEventsForSelectedDate()}
-                eventClick={(eventInfo) => handleEventClick({ event: eventInfo })}
-              />
-              <UpcomingTaskList />
-            </Box>
-          )}
-
+          {/* SpeedDialComponent ubicado en Task.js (Boton Flotante) - Comentado temporalmente */}
+          {/*
           <SpeedDialComponent
             openSpeedDial={openSpeedDial}
             handleCloseSpeedDial={() => setOpenSpeedDial(false)}
             handleOpenSpeedDial={() => setOpenSpeedDial(true)}
             speedDialActions={speedDialActions}
-            handleClick={() => setOpenCreateTask(true)}
-          />
+            handleClick={() => {
+              // Por defecto, si no se especifica un tipo, abrir con tipo genérico
+              setOpenCreateTask(true);
+            }}
+            handleActionClick={(action) => {
+              // Capturar el tipo de tarea seleccionada desde la acción
+              setSelectedTaskType(action.type);
+            }}
+           />
+          */}
         </BaseFeaturePageLayout>
       )}
 
       {/* Create Task Drawer */}
       <CreateTask
         openCreateTask={openCreateTask}
+        selectedTaskType={selectedTaskType}
         handleCloseCreateTask={() => setOpenCreateTask(false)}
       />
 

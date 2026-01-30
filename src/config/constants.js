@@ -1,7 +1,7 @@
 export const headerHeight = 50;
 export const navbarWidth = 320;
 export const navbarCollapsedWidth = 70;
-export const footerHeight = 35;
+export const footerHeight = 42;
 export const backgroundColor = '#ffffff';
 export const maxFileSizeAllowedInBytes = 5 * 1024 * 1024;
 export const API_URL = process.env.REACT_APP_API_URL;

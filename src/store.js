@@ -56,10 +56,12 @@ import saveTaskSlice from './stores/tasks/saveTaskSlice';
 import updateLogtaskDetailsSlice from './stores/tasks/updateLogtaskDetailsSlice';
 import updateResponsiblesSlice from './stores/tasks/updateResponsiblesSlice';
 import updateTaskDetailsSlice from './stores/tasks/updateTaskDetialsSlice';
+import authReducer from './stores/authSlice';
 import moduleStatisticsReducer from './stores/moduleStatisticsSlice';
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     filter: filterReducer,
     globalData: globalDataReducer,
     taskData: taskDataReducer,

@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '../../lib/axios';
+import { mockTasksAPI } from './mockTaskData';
+
+// TOGGLE THIS TO SWITCH BETWEEN MOCK AND REAL API
+const USE_MOCK_DATA = true;
 
 const initialState = {
   loading: false,
@@ -11,8 +15,16 @@ export const deleteLogtask = createAsyncThunk(
   'task/delete_logtask',
   async (data = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/tasklist_api/delete_logtask`, data);
-      return response?.data;
+      if (USE_MOCK_DATA) {
+        console.log("🎭 Using MOCK data for deleteLogtask");
+        // Extract logtask_id from FormData if needed
+        const logtask_id = data.get ? data.get('logtask_id') : data.logtask_id;
+        const mockResponse = await mockTasksAPI.deleteLogtask(logtask_id);
+        return mockResponse;
+      } else {
+        const response = await axiosInstance.post(`/tasklist_api/delete_logtask`, data);
+        return response?.data;
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }

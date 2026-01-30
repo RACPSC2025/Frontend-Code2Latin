@@ -15,7 +15,7 @@ const TaskHowStep = lazy(() => import('../MessageCenterCreateTask/TaskHowStep'))
 
 const steps = ['What', 'Where', 'When', 'Who', 'Why', 'How'];
 
-export default function CreateTask({ openCreateTask = false, handleCloseCreateTask = () => {} }) {
+export default function CreateTask({ openCreateTask = false, selectedTaskType = null, handleCloseCreateTask = () => {} }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);

@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '../../lib/axios';
+import { mockTasksAPI } from './mockTaskData';
+
+// TOGGLE THIS TO SWITCH BETWEEN MOCK AND REAL API
+const USE_MOCK_DATA = true;
 
 const initialState = {
   loading: false,
@@ -27,59 +31,49 @@ export const fetchListTaskNew = createAsyncThunk(
   'task/list_tasks_new_complete',
   async (formData = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post('/tasklist_api/list_tasks_new_complete', formData);
-      
-      console.log("responseTask");
-      console.log(response);
-      return response?.data;
+      if (USE_MOCK_DATA) {
+        // Use mock data
+        console.log("🎭 Using MOCK data for fetchListTaskNew");
+        const mockResponse = await mockTasksAPI.listTasksNewComplete(formData);
+        console.log("responseMockTask", mockResponse);
+        return mockResponse;
+      } else {
+        // Use real API
+        const response = await axiosInstance.post('/tasklist_api/list_tasks_new_complete', formData);
+        console.log("responseTask");
+        console.log(response);
+        return response?.data;
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-/*
 export const updateTaskProgress = createAsyncThunk(
   'tasklist_api/update_task_progress_post',
   async ({ id, progress }, { rejectWithValue }) => {
     try {
-      // Preparar datos para el backend
-      const formData = {
-        id,
-        progress
-      };
+      if (USE_MOCK_DATA) {
+        // Use mock data
+        console.log("🎭 Using MOCK data for updateTaskProgress");
+        const mockResponse = await mockTasksAPI.updateTaskProgress(id, progress);
+        console.log("responseMockUpdateTask:", mockResponse);
+        return mockResponse;
+      } else {
+        // Use real API
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("progress", progress);
 
-      // Llamada al API
-      const response = await axiosInstance.post('/tasklist_api/update_task_progress_post', formData);
+        const response = await axiosInstance.post(
+          '/tasklist_api/update_task_progress_post',
+          formData
+        );
 
-      console.log("responseUpdateTaskProgress: ", response);
-
-      return response?.data;
-    } catch (error) {
-      console.error("Error updateTaskProgress: ", error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
-*/
-export const updateTaskProgress = createAsyncThunk(
-  'tasklist_api/update_task_progress_post',
-  async ({ id, progress }, { rejectWithValue }) => {
-    try {
-      // Usar FormData para enviar al backend
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("progress", progress);
-
-      // Llamada al API
-      const response = await axiosInstance.post(
-        '/tasklist_api/update_task_progress_post',
-        formData
-      );
-
-      console.log("responseUpdateTaskProgress:", response);
-
-      return response?.data;
+        console.log("responseUpdateTaskProgress:", response);
+        return response?.data;
+      }
     } catch (error) {
       console.error("Error updateTaskProgress:", error);
       return rejectWithValue(error.message);
