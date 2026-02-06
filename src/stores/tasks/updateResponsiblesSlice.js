@@ -11,7 +11,7 @@ export const updateResponsibles = createAsyncThunk(
   'task/update_responsabels',
   async (data = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post('/tasklist_api/update_responsabels', data);
+      const response = await axiosInstance.post('/amatia/tasklist_api/update_responsabels', data);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error.message);

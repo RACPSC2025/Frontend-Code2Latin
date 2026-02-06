@@ -11,7 +11,8 @@ export const fetchLegalCounts = createAsyncThunk(
   'legal/get_legal_counts',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/message_center_api/legal_api/get_legal_counts`);
+      // 🔧 CORRECCIÓN DE ENDPOINT (06/02/2026): Se agregó el prefijo /amatia para corregir la ruta del API
+      const response = await axiosInstance.get(`/amatia/message_center_api/legal_api/get_legal_counts`);
       return response?.data;
     } catch (error) {
       if (error.response && error.response.data.message) {

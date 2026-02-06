@@ -1,0 +1,509 @@
+{
+  "list_tasks_new_complete": {
+    "url": "/tasklist_api/list_tasks_new_complete",
+    "method": "POST",
+    "description": "Lista completa de tareas con paginación",
+    "full_description": "Este endpoint es una parte fundamental del sistema Message-Center que proporciona una vista completa de las tareas con funcionalidades de paginación. A diferencia del endpoint get_task_counts, este endpoint sí acepta parámetros en la solicitud POST, principalmente para controlar la paginación.",
+    "authentication": {
+      "Auth-Token": "$2y$10$HYG/Oj2NUm2wKLquLxct7.CBHw4.B2p3Hs67vimGaWZldraKmwcSa",
+      "System-Token": "cnch"
+    },
+    "request": {
+      "headers": {
+        "Content-Type": "application/json (or multipart/form-data)",
+        "Accept": "application/json"
+      },
+      "body_structure": "FormData or JSON Object",
+      "example_payload": {
+        "page": 1
+      }
+    },
+    "response_structure": {
+      "messages": "Status message (e.g., 'Success')",
+      "total_pages": "Total number of pages available",
+      "data": "Array of task objects containing details like id, status, responsibles, and nested logtasks"
+    },
+    "integration": {
+      "code_location": "src/stores/tasks/fetchListTaskNewSlice.js",
+      "redux_thunk": "fetchListTaskNew",
+      "components": [
+        "TaskTableList.js",
+        "TaskGroupList.js",
+        "MessageCenterEventsList.js",
+        "MessageCenterEventsTable.js"
+      ]
+    },
+    "mock_response": {
+      "messages": "Success",
+      "data": [
+        {
+          "id": 1,
+          "task_title": "Auditoría Interna de Calidad ISO 9001",
+          "task_description": "Realizar la auditoría interna anual para verificar el cumplimiento de los estándares de calidad ISO 9001 en todos los departamentos operativos y administrativos.",
+          "task_type": "Cíclica",
+          "task_periodicity": "Anualmente",
+          "criticity": "Alta",
+          "task_status": "2",
+          "created_by": "admin.calidad",
+          "responsibles": {
+            "user_101": "Juan Pérez",
+            "user_102": "María García"
+          },
+          "reviewers": {
+            "user_201": "Carlos López"
+          },
+          "comment_count": 5,
+          "num_documents": 3,
+          "logtask_list": [
+            {
+              "id": 101,
+              "logtask_status": "1",
+              "logtask_title": "Fase 1: Revisión Documental",
+              "start_date": "2024-01-15",
+              "end_date": "2024-01-20",
+              "percentage": 100,
+              "comments_logtask_count": 2,
+              "attachments_logtask_count": 1
+            },
+            {
+              "id": 102,
+              "logtask_status": "2",
+              "logtask_title": "Fase 2: Entrevistas en Sitio",
+              "start_date": "2024-01-21",
+              "end_date": "2024-02-10",
+              "percentage": 45,
+              "comments_logtask_count": 3,
+              "attachments_logtask_count": 2
+            }
+          ],
+          "start_date": "2024-01-15",
+          "end_date": "2024-02-28"
+        },
+        {
+          "id": 2,
+          "task_title": "Renovación de Licencias Ambientales",
+          "task_description": "Gestionar la renovación de las licencias ambientales ante la autoridad competente para la planta de producción principal.",
+          "task_type": "Única",
+          "task_periodicity": "No aplica",
+          "criticity": "Alta",
+          "task_status": "3",
+          "created_by": "coord.ambiental",
+          "responsibles": {
+            "user_103": "Ana Martínez"
+          },
+          "reviewers": {
+            "user_202": "Pedro Sánchez"
+          },
+          "comment_count": 0,
+          "num_documents": 1,
+          "logtask_list": [],
+          "start_date": "2024-03-01",
+          "end_date": "2024-04-15"
+        },
+        {
+          "id": 3,
+          "task_title": "Mantenimiento Preventivo de Maquinaria Pesada",
+          "task_description": "Ejecutar el plan de mantenimiento preventivo trimestral para la flota de maquinaria pesada, asegurando la operatividad y seguridad.",
+          "task_type": "Cíclica",
+          "task_periodicity": "Trimestralmente",
+          "criticity": "Media",
+          "task_status": "4",
+          "created_by": "jefe.mantenimiento",
+          "responsibles": {
+            "user_104": "Roberto Gomez",
+            "user_105": "Laura Diaz"
+          },
+          "reviewers": {
+            "user_203": "Miguel Angel"
+          },
+          "comment_count": 12,
+          "num_documents": 5,
+          "logtask_list": [
+            {
+              "id": 301,
+              "logtask_status": "4",
+              "logtask_title": "Revisión de Sistema Hidráulico",
+              "start_date": "2023-12-01",
+              "end_date": "2023-12-15",
+              "percentage": 80,
+              "comments_logtask_count": 4,
+              "attachments_logtask_count": 2
+            }
+          ],
+          "start_date": "2023-12-01",
+          "end_date": "2023-12-31"
+        },
+        {
+          "id": 4,
+          "task_title": "Capacitación de Seguridad Industrial - Alturas",
+          "task_description": "Organizar y ejecutar la capacitación obligatoria de trabajo en alturas para el personal de mantenimiento y operaciones.",
+          "task_type": "Cíclica",
+          "task_periodicity": "Anualmente",
+          "criticity": "Media",
+          "task_status": "3",
+          "created_by": "rrhh.coordinador",
+          "responsibles": {
+            "user_106": "Sofia Vergara"
+          },
+          "reviewers": {
+            "user_204": "Andres Lopez"
+          },
+          "comment_count": 1,
+          "num_documents": 8,
+          "logtask_list": [],
+          "start_date": "2024-05-10",
+          "end_date": "2024-05-20"
+        },
+        {
+          "id": 5,
+          "task_title": "Inspección Mensual de Extintores",
+          "task_description": "Verificar el estado, carga y ubicación de todos los extintores de la sede administrativa y planta.",
+          "task_type": "Cíclica",
+          "task_periodicity": "Mensualmente",
+          "criticity": "Baja",
+          "task_status": "1",
+          "created_by": "seguridad.fisica",
+          "responsibles": {
+            "user_107": "Fernando Torres"
+          },
+          "reviewers": {
+            "user_205": "Lucia Mendez"
+          },
+          "comment_count": 0,
+          "num_documents": 10,
+          "logtask_list": [
+            {
+              "id": 501,
+              "logtask_status": "1",
+              "logtask_title": "Zona Norte - Planta 1",
+              "start_date": "2024-02-01",
+              "end_date": "2024-02-02",
+              "percentage": 100,
+              "comments_logtask_count": 0,
+              "attachments_logtask_count": 5
+            },
+            {
+              "id": 502,
+              "logtask_status": "1",
+              "logtask_title": "Zona Sur - Bodegas",
+              "start_date": "2024-02-03",
+              "end_date": "2024-02-04",
+              "percentage": 100,
+              "comments_logtask_count": 0,
+              "attachments_logtask_count": 5
+            }
+          ],
+          "start_date": "2024-02-01",
+          "end_date": "2024-02-05"
+        },
+        {
+          "id": 6,
+          "task_title": "Revisión de Cumplimiento Legal Laboral",
+          "task_description": "Auditoría interna de expedientes de empleados para asegurar el cumplimiento de la normativa laboral vigente.",
+          "task_type": "Permanente",
+          "task_periodicity": "Semestralmente",
+          "criticity": "Alta",
+          "task_status": "2",
+          "created_by": "legal.laboral",
+          "responsibles": {
+            "user_108": "Diana Prince"
+          },
+          "reviewers": {
+            "user_206": "Bruce Wayne"
+          },
+          "comment_count": 3,
+          "num_documents": 15,
+          "logtask_list": [
+            {
+              "id": 601,
+              "logtask_status": "2",
+              "logtask_title": "Revisión Contratos 2024",
+              "start_date": "2024-06-01",
+              "end_date": "2024-06-15",
+              "percentage": 50,
+              "comments_logtask_count": 1,
+              "attachments_logtask_count": 10
+            }
+          ],
+          "start_date": "2024-06-01",
+          "end_date": "2024-06-30"
+        }
+      ],
+      "total_pages": 6
+    }
+  },
+  "list_logtasks": {
+    "url": "/tasklist_api/list_logtasks/{id}",
+    "method": "POST",
+    "description": "Lista los logtasks (ciclos) asociados a una tarea específica",
+    "full_description": "Lista los logtasks (ciclos o subtareas) asociados a una tarea específica. Permite mostrar una estructura jerárquica donde las tareas principales tienen logtasks asociados. La carga es selectiva y bajo demanda, optimizando el rendimiento.",
+    "authentication": {
+      "Auth-Token": "$2y$10$HYG/Oj2NUm2wKLquLxct7.CBHw4.B2p3Hs67vimGaWZldraKmwcSa",
+      "System-Token": "cnch"
+    },
+    "request": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      "body_structure": "URL Parameter (Task ID)",
+      "example_usage": "dispatch(fetchLogtaskList({ task_id: 123 })) -> POST /tasklist_api/list_logtasks/123"
+    },
+    "response_structure": {
+      "messages": "Status message",
+      "data": "Array of logtask objects linked to the task_id"
+    },
+    "integration": {
+      "code_location": "src/stores/tasks/fetchLogtaskListSlice.js",
+      "redux_thunk": "fetchLogtaskList",
+      "components": [
+        "TaskGroupList.js",
+        "MessageCenterEventsList.js"
+      ]
+    },
+    "mock_response": {
+      "messages": "Success",
+      "data": [
+        {
+          "id": 101,
+          "task_id": 1,
+          "logtask_status": "1",
+          "logtask_title": "Fase 1: Revisión Documental",
+          "start_date": "2024-01-15",
+          "end_date": "2024-01-20",
+          "actions_count": 2,
+          "real_closing_date": "2024-01-19",
+          "closing_opportunity_days": 1,
+          "percentage": 100.0,
+          "complete": "Completed",
+          "comments_logtask_count": 2,
+          "attachments_logtask_count": 1
+        },
+        {
+          "id": 102,
+          "task_id": 1,
+          "logtask_status": "2",
+          "logtask_title": "Fase 2: Entrevistas en Sitio",
+          "start_date": "2024-01-21",
+          "end_date": "2024-02-10",
+          "actions_count": 5,
+          "real_closing_date": null,
+          "closing_opportunity_days": 15,
+          "percentage": 45.0,
+          "complete": "NOT Completed",
+          "comments_logtask_count": 3,
+          "attachments_logtask_count": 2
+        },
+        {
+          "id": 103,
+          "task_id": 1,
+          "logtask_status": "3",
+          "logtask_title": "Fase 3: Informe Preliminar",
+          "start_date": "2024-02-11",
+          "end_date": "2024-02-20",
+          "actions_count": 1,
+          "real_closing_date": null,
+          "closing_opportunity_days": 20,
+          "percentage": 0.0,
+          "complete": "NOT Completed",
+          "comments_logtask_count": 0,
+          "attachments_logtask_count": 0
+        },
+        {
+          "id": 104,
+          "task_id": 1,
+          "logtask_status": "3",
+          "logtask_title": "Fase 4: Cierre y Plan de Acción",
+          "start_date": "2024-02-21",
+          "end_date": "2024-02-28",
+          "actions_count": 3,
+          "real_closing_date": null,
+          "closing_opportunity_days": 28,
+          "percentage": 0.0,
+          "complete": "NOT Completed",
+          "comments_logtask_count": 0,
+          "attachments_logtask_count": 0
+        }
+      ]
+    }
+  },
+  "get_task_counts": {
+    "url": "/tasklist_api/get_task_counts",
+    "method": "POST",
+    "description": "Obtener contadores de tareas agrupadas por estado",
+    "full_description": "Proporciona métricas esenciales sobre el estado de las tareas (totales, por estado) para alimentar dashboards y gráficos de resumen del sistema.",
+    "authentication": {
+      "Auth-Token": "$2y$10$HYG/Oj2NUm2wKLquLxct7.CBHw4.B2p3Hs67vimGaWZldraKmwcSa",
+      "System-Token": "cnch"
+    },
+    "request": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      "body_structure": "Empty body",
+      "example_payload": {}
+    },
+    "response_structure": {
+      "messages": "Status message",
+      "data": {
+        "total_tasks": "Count of all tasks",
+        "tasks": "Map of task status ID to count",
+        "total_logtasks": "Count of all logtasks",
+        "logtasks": "Map of logtask status ID to count"
+      }
+    },
+    "integration": {
+      "code_location": "src/stores/tasks/fetchTaskCountsSlice.js",
+      "redux_thunk": "fetchTaskCounts",
+      "components": [
+        "TaskReport.js",
+        "MessageCenterEventsReport.js",
+        "Tasks.js"
+      ]
+    },
+    "mock_response": {
+      "messages": "Success",
+      "data": {
+        "total_tasks": 160,
+        "tasks": {
+          "1": 100,
+          "2": 48,
+          "3": 7,
+          "4": 5
+        },
+        "total_logtasks": 210,
+        "logtasks": {
+          "1": 105,
+          "2": 62,
+          "3": 23,
+          "4": 20
+        }
+      }
+    }
+  },
+  "get_logtask_details": {
+    "url": "/tasklist_api/get_logtask_details",
+    "method": "POST",
+    "description": "Obtener detalles de un ciclo específico",
+    "full_description": "Recupera la información completa y detallada de un ciclo/logtask específico. Es fundamental para la visualización de detalles y formularios de edición de ciclos.",
+    "authentication": {
+      "Auth-Token": "$2y$10$HYG/Oj2NUm2wKLquLxct7.CBHw4.B2p3Hs67vimGaWZldraKmwcSa",
+      "System-Token": "cnch"
+    },
+    "request": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      "body_structure": "JSON Object",
+      "example_payload": {
+        "logtask_id": 102
+      }
+    },
+    "response_structure": {
+      "messages": "Status message",
+      "data": "Detailed logtask object with description, assignments, and dates"
+    },
+    "integration": {
+      "code_location": "src/stores/tasks/getLogtaskDetailsSlice.js",
+      "redux_thunk": "getLogtaskDetails",
+      "components": [
+        "EditCycleDetailsDrawer.js",
+        "TaskGroupList.js"
+      ]
+    },
+    "mock_response": {
+      "messages": "Success",
+      "data": {
+        "id": 102,
+        "task_id": 1,
+        "logtask_title": "Fase 2: Entrevistas en Sitio",
+        "logtask_status": "2",
+        "start_date": "2024-01-21",
+        "end_date": "2024-02-10",
+        "real_closing_date": null,
+        "percentage": 45.0,
+        "complete": "NOT Completed",
+        "comments_logtask_count": 3,
+        "attachments_logtask_count": 2,
+        "actions_count": 5,
+        "closing_opportunity_days": 15,
+        "days_remaining": 5,
+        "description": "Realizar visitas de campo y entrevistas con los responsables de proceso según el plan establecido en la Fase 1. Se debe verificar el cumplimiento de los estándares ISO 9001:2015 en las áreas de producción y logística. Documentar hallazgos y no conformidades.",
+        "created_by": "admin.calidad",
+        "assigned_to": {
+          "user_101": "Juan Pérez",
+          "user_102": "María García"
+        },
+        "reviewers": {
+          "user_201": "Carlos López"
+        }
+      }
+    }
+  },
+  "list_task_status": {
+    "url": "/tasklist_api/list_task_status",
+    "method": "POST",
+    "description": "Obtener estados disponibles de tareas",
+    "full_description": "Devuelve la configuración de estados disponibles para las tareas, incluyendo información visual como colores y etiquetas, asegurando consistencia en la UI.",
+    "authentication": {
+      "Auth-Token": "$2y$10$HYG/Oj2NUm2wKLquLxct7.CBHw4.B2p3Hs67vimGaWZldraKmwcSa",
+      "System-Token": "cnch"
+    },
+    "request": {
+      "headers": {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      "body_structure": "Empty body",
+      "example_payload": {}
+    },
+    "response_structure": {
+      "messages": "Status message",
+      "data": "Array of status objects defining label, value, color, and order"
+    },
+    "integration": {
+      "code_location": "src/stores/tasks/fetchTaskListStatusSlice.js",
+      "redux_thunk": "fetchTaskListStatus",
+      "components": [
+        "TheLayoutNavbar.js",
+        "TaskTableList.js",
+        "TaskReport.js"
+      ]
+    },
+    "mock_response": {
+      "messages": "Success",
+      "data": [
+        {
+          "value": "1",
+          "label": "completed",
+          "value_number": "1",
+          "color_code": "#00f57a",
+          "order": 1
+        },
+        {
+          "value": "2",
+          "label": "in_progress",
+          "value_number": "2",
+          "color_code": "#ead93e",
+          "order": 2
+        },
+        {
+          "value": "3",
+          "label": "open",
+          "value_number": "3",
+          "color_code": "#01baab",
+          "order": 3
+        },
+        {
+          "value": "4",
+          "label": "expired",
+          "value_number": "4",
+          "color_code": "#fb3d61",
+          "order": 4
+        }
+      ]
+    }
+  }
+}

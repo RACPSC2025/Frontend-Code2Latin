@@ -3,7 +3,7 @@ import axiosInstance from '../../lib/axios';
 import { mockTasksAPI } from './mockTaskData';
 
 // TOGGLE THIS TO SWITCH BETWEEN MOCK AND REAL API
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 const initialState = {
   loading: false,
@@ -21,7 +21,7 @@ export const fetchLogtaskList = createAsyncThunk(
         const mockResponse = await mockTasksAPI.listLogtasks(task_id);
         return mockResponse;
       } else {
-        const response = await axiosInstance.post(`/tasklist_api/list_logtasks/${parseInt(task_id)}`);
+        const response = await axiosInstance.post(`/amatia/tasklist_api/list_logtasks/${parseInt(task_id)}`);
         return response?.data;
       }
     } catch (error) {

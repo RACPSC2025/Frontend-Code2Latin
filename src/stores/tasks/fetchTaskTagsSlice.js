@@ -11,7 +11,7 @@ export const fetchTaskTags = createAsyncThunk(
   'task/list_tags',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post('/tasklist_api/list_tags');
+      const response = await axiosInstance.post('/amatia/tasklist_api/list_tags');
       return response?.data;
     } catch (error) {
       return rejectWithValue(error.message);

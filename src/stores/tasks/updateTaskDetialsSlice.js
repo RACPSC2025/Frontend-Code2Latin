@@ -11,7 +11,7 @@ export const updateTaskDetails = createAsyncThunk(
   'task/update_task_basic_details',
   async (data = {}, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post('/tasklist_api/update_task_basic_details', data);
+      const response = await axiosInstance.post('/amatia/tasklist_api/update_task_basic_details', data);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error.message);

@@ -409,11 +409,16 @@ export function Component() {
     //console.log('listLegalStatus: ', listLegalStatus);
     const tempStatus = String(params.data.status).toLowerCase();
 
-    const matchedStatus = listLegalStatus.find((status) => {
-      const statusNumber = String(status.value_number).toLowerCase();
-      const statusLabel = String(status.label).toLowerCase(); // convierte boolean/texto a string
-      return statusNumber === tempStatus || statusLabel === tempStatus;
-    });
+    // ✅ VERIFICAR QUE listLegalStatus EXISTE Y ES UN ARRAY
+    const matchedStatus = listLegalStatus && Array.isArray(listLegalStatus)
+      ? listLegalStatus.find((status) => {
+          // Asegurarse de que status no sea nulo antes de acceder a sus propiedades
+          if (!status) return false;
+          const statusNumber = String(status.value_number).toLowerCase();
+          const statusLabel = String(status.label).toLowerCase(); // convierte boolean/texto a string
+          return statusNumber === tempStatus || statusLabel === tempStatus;
+        })
+      : null;
 
     return (
       <Box sx={{ pl: 3 }}>
@@ -565,18 +570,22 @@ export function Component() {
         // Normalizamos el valor a comparar
         const tempStatus = String(params.data.status).toLowerCase();
 
-        // Buscamos coincidencia en listLegalStatus
-        const matchedStatus = listLegalStatus.find((status) => {
-          const statusNumber = String(status.value_number).toLowerCase();
-          const statusValue = String(status.value).toLowerCase();
-          const statusLabel = String(status.label).toLowerCase(); // soporta boolean y string
+        // ✅ VERIFICAR QUE listLegalStatus EXISTE Y ES UN ARRAY
+        const matchedStatus = listLegalStatus && Array.isArray(listLegalStatus)
+          ? listLegalStatus.find((status) => {
+              // Asegurarse de que status no sea nulo antes de acceder a sus propiedades
+              if (!status) return false;
+              const statusNumber = String(status.value_number).toLowerCase();
+              const statusValue = String(status.value).toLowerCase();
+              const statusLabel = String(status.label).toLowerCase(); // soporta boolean y string
 
-          return (
-            statusNumber === tempStatus ||
-            statusValue === tempStatus ||
-            statusLabel === tempStatus
-          );
-        });
+              return (
+                statusNumber === tempStatus ||
+                statusValue === tempStatus ||
+                statusLabel === tempStatus
+              );
+            })
+          : null;
 
         // Si hay match usamos el color_code, sino color por defecto
         const badgeColor = matchedStatus?.color_code || '#1976d2';

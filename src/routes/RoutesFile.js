@@ -48,7 +48,8 @@ export default function RoutesFile() {
       const route = `/view/${sortedPermissions[0]?.key}`;
       setDefaultRoute(route);
     } else {
-      setDefaultRoute('/view/notifications');
+      // Cambiado para iniciar directamente en el TaskCenter (events)
+      setDefaultRoute('/view/events');
     }
   }, [subdomain]);
 

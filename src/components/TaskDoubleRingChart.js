@@ -4,6 +4,7 @@ import { Box, Typography } from '@mui/material';
 export const TaskDoubleRingChart = ({ 
   percentage, 
   stats,
+  chartData,
   size = 80, 
   strokeWidth = 8,
   innerStrokeWidth = 6,
@@ -17,7 +18,7 @@ export const TaskDoubleRingChart = ({
 
   // Inner Ring Dimensions (Total Progress)
   // Calculate inner radius so it sits inside the outer ring with a gap
-  const innerRadius = radius - (strokeWidth / 2) - gap - (innerStrokeWidth / 2);
+  const innerRadius = radius - (strokeWidth / 2) - gap - (strokeWidth / 2);
   const innerCircumference = innerRadius * 2 * Math.PI;
 
   // Animation for the center number
@@ -44,27 +45,58 @@ export const TaskDoubleRingChart = ({
   }, [percentage]);
 
   // --- Outer Ring Segments Calculation ---
-  const total = stats ? (stats.completed + stats.inProgress + stats.expired + stats.open) : 0;
+  // Adaptador para soportar tanto `stats` (legacy) como `chartData` (dinámico)
+  let segments = [];
+  let total = 0;
+
+  if (chartData && Array.isArray(chartData)) {
+    // Modo Dinámico (Nuevo) - Ahora usamos el porcentaje directamente
+    segments = chartData;
+    total = segments.reduce((acc, curr) => acc + (curr.value || 0), 0);
+  } else if (stats) {
+    // Modo Legacy (Compatibilidad hacia atrás)
+    const colors = {
+      completed: '#00f57a',
+      inProgress: '#1a90ff',
+      expired: '#fb3d61',
+      open: '#fbc02d',
+      background: '#edf2f4'
+    };
+    total = (stats.completed + stats.inProgress + stats.expired + stats.open);
+    segments = [
+      { value: stats.completed, color: colors.completed, key: 'completed' },
+      { value: stats.inProgress, color: colors.inProgress, key: 'inProgress' },
+      { value: stats.expired, color: colors.expired, key: 'expired' },
+      { value: stats.open, color: colors.open, key: 'open' }
+    ];
+  }
+
   const hasData = total > 0;
 
-  // Colors mapping (matching project colors)
-  const colors = {
-    completed: '#00f57a',
-    inProgress: '#1a90ff',
-    expired: '#fb3d61',
-    open: '#fbc02d', // Using planning/yellow for open to have 4 colors
-    background: '#edf2f4'
-  };
+  // Calcular offsets dinámicamente
+  let currentOffset = 0;
+  const renderedSegments = segments.map((segment) => {
+    // Usar el porcentaje si está disponible, de lo contrario calcularlo a partir del valor
+    let segmentPercentage;
+    if (segment.percentage !== undefined) {
+      segmentPercentage = segment.percentage;
+    } else if (total > 0) {
+      // Calcular el porcentaje basado en el valor relativo al total
+      segmentPercentage = ((segment.value || 0) / total) * 100;
+    } else {
+      segmentPercentage = 0;
+    }
+    
+    const len = hasData ? (segmentPercentage / 100) * circumference : 0;
+    const offset = -currentOffset;
+    currentOffset += len;
 
-  const completedLen = hasData ? (stats.completed / total) * circumference : 0;
-  const inProgressLen = hasData ? (stats.inProgress / total) * circumference : 0;
-  const expiredLen = hasData ? (stats.expired / total) * circumference : 0;
-  const openLen = hasData ? (stats.open / total) * circumference : 0;
-  
-  const completedOffset = 0;
-  const inProgressOffset = -completedLen;
-  const expiredOffset = -(completedLen + inProgressLen);
-  const openOffset = -(completedLen + inProgressLen + expiredLen);
+    return {
+      ...segment,
+      strokeDasharray: `${Math.max(0, len - (segments.length > 1 ? 2 : 0))} ${circumference}`,
+      strokeDashoffset: offset
+    };
+  });
 
   // --- Inner Ring Calculation ---
   const innerProgressLen = ((percentage || 0) / 100) * innerCircumference;
@@ -80,28 +112,30 @@ export const TaskDoubleRingChart = ({
       >
         {/* --- INNER RING (Total Progress) --- */}
         <circle
-          stroke={colors.background}
+          stroke="#edf2f4"
           fill="transparent"
           r={innerRadius}
           cx={center}
           cy={center}
           strokeWidth={innerStrokeWidth}
         />
-        <circle
-          stroke={percentage === 100 ? colors.completed : '#263238'}
-          fill="transparent"
-          r={innerRadius}
-          cx={center}
-          cy={center}
-          strokeWidth={innerStrokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={`${Math.max(0, innerProgressLen)} ${innerCircumference}`}
-          style={transitionStyle}
-        />
+        {percentage > 0 && (
+          <circle
+            stroke={percentage === 100 ? '#00f57a' : '#9c27b0'}  // Púrpura corporativo en lugar de negro/gris
+            fill="transparent"
+            r={innerRadius}
+            cx={center}
+            cy={center}
+            strokeWidth={strokeWidth}  // Igualar al ancho del anillo exterior
+            strokeLinecap="round"
+            strokeDasharray={`${Math.max(0, innerProgressLen)} ${innerCircumference}`}
+            style={transitionStyle}
+          />
+        )}
 
         {/* --- OUTER RING (Status Segments) --- */}
         <circle
-          stroke={colors.background}
+          stroke="#edf2f4"
           fill="transparent"
           r={radius}
           cx={center}
@@ -109,73 +143,24 @@ export const TaskDoubleRingChart = ({
           strokeWidth={strokeWidth}
         />
         
-        {hasData && (
-          <>
-            {/* Completed */}
-            {stats.completed > 0 && (
+        {hasData && renderedSegments.map((segment, index) => {
+            const shouldRender = segment.percentage !== undefined ? segment.percentage > 0 : segment.value > 0;
+            return shouldRender && (
               <circle
-                stroke={colors.completed}
+                key={index}
+                stroke={segment.color}
                 fill="transparent"
                 r={radius}
                 cx={center}
                 cy={center}
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
-                strokeDasharray={`${Math.max(0, completedLen - (total > 1 ? 2 : 0))} ${circumference}`}
-                strokeDashoffset={completedOffset}
+                strokeDasharray={segment.strokeDasharray}
+                strokeDashoffset={segment.strokeDashoffset}
                 style={transitionStyle}
               />
-            )}
-            
-            {/* In Progress */}
-            {stats.inProgress > 0 && (
-              <circle
-                stroke={colors.inProgress}
-                fill="transparent"
-                r={radius}
-                cx={center}
-                cy={center}
-                strokeWidth={strokeWidth}
-                strokeLinecap="round"
-                strokeDasharray={`${Math.max(0, inProgressLen - (total > 1 ? 2 : 0))} ${circumference}`}
-                strokeDashoffset={inProgressOffset}
-                style={transitionStyle}
-              />
-            )}
-            
-            {/* Expired */}
-            {stats.expired > 0 && (
-              <circle
-                stroke={colors.expired}
-                fill="transparent"
-                r={radius}
-                cx={center}
-                cy={center}
-                strokeWidth={strokeWidth}
-                strokeLinecap="round"
-                strokeDasharray={`${Math.max(0, expiredLen - (total > 1 ? 2 : 0))} ${circumference}`}
-                strokeDashoffset={expiredOffset}
-                style={transitionStyle}
-              />
-            )}
-
-            {/* Open */}
-            {stats.open > 0 && (
-              <circle
-                stroke={colors.open}
-                fill="transparent"
-                r={radius}
-                cx={center}
-                cy={center}
-                strokeWidth={strokeWidth}
-                strokeLinecap="round"
-                strokeDasharray={`${Math.max(0, openLen - (total > 1 ? 2 : 0))} ${circumference}`}
-                strokeDashoffset={openOffset}
-                style={transitionStyle}
-              />
-            )}
-          </>
-        )}
+            );
+        })}
       </svg>
       
       {/* Center Text */}

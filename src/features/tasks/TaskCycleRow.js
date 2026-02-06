@@ -1,161 +1,241 @@
-import React from 'react';
-import { Box, Typography, Paper, IconButton, LinearProgress } from '@mui/material';
-import { 
-  DeleteOutline, 
-  ChatBubbleOutline, 
-  AttachFile 
-} from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import React, { useState } from 'react';
+import { Box, Typography, Chip, LinearProgress, IconButton, Tooltip } from '@mui/material';
+import { AttachFile as AttachFileIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { FaComment } from 'react-icons/fa';
+import FileUploadDialog from '../../components/FileUploadDialog';
 
-const StyledProgressBar = styled(LinearProgress)(({ theme, progresscolor }) => ({
-  height: 6,
-  borderRadius: 5,
-  backgroundColor: '#f1f1f1',
-  '& .MuiLinearProgress-bar': {
-    borderRadius: 5,
-    backgroundColor: progresscolor || '#1a90ff',
-  },
-}));
-
-const OpportunityChip = styled(Box)(({ color }) => ({
-  display: 'inline-flex',
-  padding: '2px 10px',
-  borderRadius: '6px',
-  fontSize: '0.75rem',
-  fontWeight: 800,
-  backgroundColor: color + '12', 
-  color: color,
-  minWidth: '85px',
-  justifyContent: 'center',
-  border: `1px solid ${color}10`
-}));
-
-const TaskCycleRow = ({ task, statuses, onSelect, isSelected, index }) => {
+const TaskCycleRow = ({ task, index, statuses, onSelect, isSelected }) => {
   
-  const getStatusInfo = (statusValue) => {
-    // Colores extraídos exactamente de la imagen de referencia
-    const colorMap = {
-      'completed': '#00f57a',
-      'expired': '#fb3d61',
-      'vencido': '#fb3d61',
-      'in_progress': '#1a90ff',
-      'open': '#fbc02d',
-      'planning': '#fbc02d'
-    };
-    
-    // Intentar encontrar el label en los estados
-    const status = statuses.find(s => String(s.value) === String(statusValue));
-    const label = status?.label?.toLowerCase() || 'open';
-    const color = colorMap[label] || colorMap[task.task_status?.toLowerCase()] || '#1a90ff';
+  // ✅ ESTADO PARA DIALOG DE ARCHIVOS
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
 
-    return { label, color };
-  };
-
-  const statusInfo = getStatusInfo(task.task_status);
+  // ✅ MANEJAR DATOS REALES
+  const displayTitle = task.logtask_title || `Ciclo ${task.id}`;
+  const startDate = task.start_date ? new Date(task.start_date).toLocaleDateString() : '-';
+  const endDate = task.end_date ? new Date(task.end_date).toLocaleDateString() : '-';
+  const realClosingDate = task.real_closing_date ? new Date(task.real_closing_date).toLocaleDateString() : '-';
+  const opportunityDays = task.opportunity_days || 0;
+  const progress = parseFloat(task.progress) || 0;
   
-  const formatDate = (dateString, isMain = false) => {
-    if (!dateString || dateString === '--') return '--';
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString;
-    
-    const day = date.getDate().toString().padStart(2, '0');
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear().toString().slice(-2);
-    
-    return `${day} ${month} ${year}`;
+  // ✅ OBTENER COLOR Y LABEL DE ESTADO
+  const statusColor = task.status_color || '#90a4ae';
+  const statusLabel = task.status_label || 'Desconocido';
+  
+  // ✅ DETERMINAR COLOR DE OPORTUNIDAD
+  const getOpportunityColor = (days) => {
+    if (days > 5) return '#00f57a'; // Verde - Muy bueno
+    if (days > 0) return '#fbc02d'; // Amarillo - Aceptable
+    if (days === 0) return '#ff9800'; // Naranja - Justo a tiempo
+    return '#fb3d61'; // Rojo - Retrasado
   };
 
-  const getOpportunity = (days) => {
-    const numDays = parseInt(days);
-    if (numDays > 0) return { label: `+${numDays} Día${numDays > 1 ? 's' : ''}`, color: '#fb3d61' };
-    if (numDays === 0) return { label: 'A tiempo', color: '#00f57a' };
-    return { label: 'En plazo', color: '#455a64' };
+  // ✅ DETERMINAR COLOR DE PROGRESO
+  const getProgressColor = (progress) => {
+    if (progress === 100) return '#00f57a';
+    if (progress >= 75) return '#4caf50';
+    if (progress >= 50) return '#ff9800';
+    if (progress >= 25) return '#fbc02d';
+    return '#fb3d61';
   };
 
-  const opportunity = getOpportunity(task.opportunity_days);
+  // ✅ MANEJAR CLIC EN ATTACH FILE
+  const handleAttachFileClick = (e) => {
+    e.stopPropagation(); // Evitar que se seleccione la fila
+    setUploadDialogOpen(true);
+  };
+
+  // ✅ MANEJAR SUBIDA DE ARCHIVOS
+  const handleFileUpload = (results) => {
+    console.log('📎 Archivos subidos para ciclo:', task.id, results);
+    // Aquí puedes agregar lógica adicional como refrescar la lista de archivos
+  };
+
+  // ✅ MANEJAR ELIMINAR CICLO
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // Evitar que se seleccione la fila
+    if (window.confirm(`¿Estás seguro de que deseas eliminar el ciclo "${displayTitle}"?`)) {
+      // Aquí iría la lógica para eliminar el ciclo
+      console.log('🗑️ Eliminando ciclo:', task.id);
+      // dispatch(deleteLogtask({ id: task.id })) - ejemplo de cómo sería
+    }
+  };
+
+  // ✅ OBTENER EL COLOR DEL ESTADO DEL CICLO - Usar directamente el estado del ciclo
+  const getStatusColor = (statusValue, statusList) => {
+    if (!statusList || !Array.isArray(statusList)) return '#90a4ae';
+    
+    // Manejar posibles valores nulos o indefinidos
+    if (statusValue === null || statusValue === undefined) return '#90a4ae';
+    
+    // Asegurar que el valor del estado sea un string para la comparación
+    const statusStr = String(statusValue);
+    
+    // Buscar el estado con comparación flexible (convertir ambos a string)
+    const status = statusList.find(s => {
+      const sValue = s.value !== null && s.value !== undefined ? String(s.value) : '';
+      return sValue === statusStr;
+    });
+    
+    // Si encontramos el estado, devolver su color, de lo contrario gris por defecto
+    return status ? status.color_code : '#90a4ae';
+  };
+
+  // Usar el estado del logtask directamente, con fallback a task_status
+  const cycleStatusColor = getStatusColor(task.logtask_status || task.task_status || task.status, statuses);
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        borderBottom: '1px solid #edf2f4',
-        borderRadius: 0,
-        padding: '8px 16px', // Más compacto
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative',
-        bgcolor: isSelected ? '#f5f9ff' : (index % 2 === 0 ? 'white' : '#f9fbfd'),
-        '&:hover': {
-          backgroundColor: '#f1f4f8',
-        },
-      }}
-      onClick={() => onSelect && onSelect(task)}
-    >
-      {/* Indicador de estado lateral */}
-      <Box 
-        sx={{ 
-          position: 'absolute', 
-          left: 0, 
-          top: 0, 
-          bottom: 0, 
-          width: 4, 
-          bgcolor: statusInfo.color,
-        }} 
-      />
-
-      <Box display="flex" alignItems="center" width="100%">
-        {/* INICIO */}
-        <Box flex="0 0 110px">
-          <Typography sx={{ fontWeight: 800, fontSize: '0.85rem', color: '#263238' }}>
-            {formatDate(task.start_date)}
+    <>
+      <Box
+        onClick={onSelect}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          p: '12px 16px',
+          borderBottom: '1px solid #f5f7f9',
+          cursor: 'pointer',
+          bgcolor: isSelected ? '#f5f9ff' : 'transparent',
+          borderLeft: `4px solid ${cycleStatusColor}`, // ✅ COLOR DEL ESTADO DEL CICLO
+          '&:hover': {
+            bgcolor: '#f8fbfc',
+            '& .action-button': { opacity: 1 }
+          },
+          transition: 'all 0.2s ease'
+        }}
+      >
+        {/* ✅ FECHA DE INICIO */}
+        <Box flex="0 0 100px" textAlign="left">
+          <Typography sx={{ fontSize: '0.8rem', color: '#263238', fontWeight: 600 }}>
+            {startDate}
           </Typography>
         </Box>
 
-        {/* CIERRE PROG */}
-        <Box flex="0 0 110px">
-          <Typography sx={{ color: '#78909c', fontSize: '0.85rem', fontWeight: 600 }}>
-            {formatDate(task.end_date)}
+        {/* ✅ FECHA DE CIERRE PROGRAMADO */}
+        <Box flex="0 0 100px" textAlign="left">
+          <Typography sx={{ fontSize: '0.8rem', color: '#263238', fontWeight: 600 }}>
+            {endDate}
           </Typography>
         </Box>
 
-        {/* CIERRE REAL */}
-        <Box flex="0 0 110px">
-          <Typography sx={{ color: '#78909c', fontSize: '0.85rem', fontWeight: 600 }}>
-            {task.real_close_date || '--'}
+        {/* ✅ FECHA DE CIERRE REAL */}
+        <Box flex="0 0 100px" textAlign="left">
+          <Typography sx={{
+            fontSize: '0.8rem',
+            color: realClosingDate === '-' ? '#90a4ae' : '#263238',
+            fontWeight: 600,
+            fontStyle: realClosingDate === '-' ? 'italic' : 'normal'
+          }}>
+            {realClosingDate === '-' ? 'Pendiente' : realClosingDate}
           </Typography>
         </Box>
 
-        {/* OPORTUNIDAD */}
-        <Box flex="0 0 130px">
-          <OpportunityChip color={opportunity.color}>
-            {opportunity.label}
-          </OpportunityChip>
+        {/* ✅ DÍAS DE OPORTUNIDAD */}
+        <Box flex="0 0 80px" textAlign="center">
+          <Chip
+            label={`${opportunityDays > 0 ? '+' : ''}${opportunityDays}`}
+            size="small"
+            sx={{
+              bgcolor: `${getOpportunityColor(opportunityDays)}20`,
+              color: getOpportunityColor(opportunityDays),
+              border: `1px solid ${getOpportunityColor(opportunityDays)}40`,
+              fontWeight: 700,
+              fontSize: '0.65rem',
+              height: '20px',
+              '& .MuiChip-label': {
+                px: 0.5
+              }
+            }}
+          />
         </Box>
 
-        {/* ACCIONES */}
-        <Box flex="1 1 auto" display="flex" justifyContent="center" gap={0.5}>
-          <IconButton size="small" sx={{ color: '#90a4ae' }}><DeleteOutline sx={{ fontSize: 18 }} /></IconButton>
-          <IconButton size="small" sx={{ color: '#90a4ae' }}><ChatBubbleOutline sx={{ fontSize: 18 }} /></IconButton>
-          <IconButton size="small" sx={{ color: '#90a4ae' }}><AttachFile sx={{ fontSize: 18, transform: 'rotate(45deg)' }} /></IconButton>
+        {/* ✅ ACCIONES */}
+        <Box flex="0 0 120px" textAlign="center">
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+            {/* ✅ BOTÓN DE ADJUNTAR ARCHIVO */}
+            <Tooltip title="Adjuntar archivo">
+              <IconButton
+                size="small"
+                onClick={handleAttachFileClick}
+                sx={{
+                  color: '#1a90ff',
+                  '&:hover': { bgcolor: '#e3f2fd' }
+                }}
+              >
+                <AttachFileIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+
+            {/* ✅ BOTÓN DE COMENTAR */}
+            <Tooltip title="Comentar">
+              <IconButton
+                size="small"
+                sx={{
+                  color: '#1a90ff',
+                  '&:hover': { bgcolor: '#e3f2fd' }
+                }}
+              >
+                <FaComment style={{ fontSize: '1rem' }} />
+              </IconButton>
+            </Tooltip>
+
+            {/* ✅ BOTÓN DE ELIMINAR */}
+            <Tooltip title="Eliminar">
+              <IconButton
+                size="small"
+                onClick={handleDeleteClick}
+                sx={{
+                  color: '#fb3d61',
+                  '&:hover': { bgcolor: '#ffebee' }
+                }}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
 
-        {/* PROGRESO */}
-        <Box flex="0 0 200px" display="flex" alignItems="center" gap={2}>
-          <Typography sx={{ fontWeight: 800, minWidth: 40, textAlign: 'right', fontSize: '0.85rem', color: '#263238' }}>
-            {task.progress || 0}%
-          </Typography>
-          <Box flex={1}>
-            <StyledProgressBar
-              variant="determinate"
-              value={task.progress || 0}
-              progresscolor={statusInfo.color}
-            />
+        {/* ✅ PROGRESO */}
+        <Box flex="0 0 120px" textAlign="center">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'center' }}>
+            <Box sx={{ flex: 1, maxWidth: '60px' }}>
+              <LinearProgress
+                variant="determinate"
+                value={progress}
+                sx={{
+                  height: 6,
+                  borderRadius: 3,
+                  bgcolor: '#f0f2f5',
+                  '& .MuiLinearProgress-bar': {
+                    bgcolor: getProgressColor(progress),
+                    borderRadius: 3
+                  }
+                }}
+              />
+            </Box>
+            <Typography sx={{
+              fontSize: '0.75rem',
+              fontWeight: 800,
+              color: '#263238',
+              minWidth: '30px'
+            }}>
+              {progress}%
+            </Typography>
           </Box>
         </Box>
       </Box>
-    </Paper>
+
+      {/* ✅ DIALOG DE SUBIDA DE ARCHIVOS */}
+      <FileUploadDialog
+        open={uploadDialogOpen}
+        onClose={() => setUploadDialogOpen(false)}
+        onUpload={handleFileUpload}
+        title={`Adjuntar archivos - ${displayTitle}`}
+        taskId={task.task_id}
+        logtaskId={task.id}
+        acceptedTypes=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+        maxFileSize={10 * 1024 * 1024} // 10MB
+        maxFiles={5}
+      />
+    </>
   );
 };
 

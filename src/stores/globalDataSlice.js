@@ -84,7 +84,8 @@ export const fetchRegions = createAsyncThunk(
   'globalData/fetchRegions',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post('/tasklist_api/list_level1');
+      // 🔧 CORRECCIÓN DE ENDPOINT (06/02/2026): Se agregó el prefijo /amatia para corregir la ruta del API
+      const response = await axiosInstance.post('/amatia/tasklist_api/list_level1');
       const data = response.data.data;
       return data;
     } catch (error) {

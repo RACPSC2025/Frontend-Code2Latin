@@ -13,7 +13,7 @@ export const fetchMessageFormFields = createAsyncThunk(
     const { formData, file } = data;
     try {
       const response = await axiosInstance.post(
-        '/tasklist_api/message_form_fields',
+        '/amatia/tasklist_api/message_form_fields',
         formData,
         file && fileHeader
       );

@@ -133,9 +133,13 @@ export default function TaskTableList() {
   */
   const getSquareIcon = (params) => {
     const tempStatus = String(params.data.task_status); // Puede venir como string o número
-    const matchedStatus = listTaskStatus.find(
-      (status) => status.value_number === tempStatus || status.value_number === String(tempStatus)
-    );
+    
+    // ✅ VERIFICAR QUE listTaskStatus EXISTE Y ES UN ARRAY
+    const matchedStatus = listTaskStatus && Array.isArray(listTaskStatus) 
+      ? listTaskStatus.find(
+          (status) => status.value_number === tempStatus || status.value_number === String(tempStatus)
+        )
+      : null;
 
     if (matchedStatus) {
       return (

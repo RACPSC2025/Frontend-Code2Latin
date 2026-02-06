@@ -11,7 +11,8 @@ export const dashboardMessage = createAsyncThunk(
   'dashboard/messages',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post('/tasklist_api/dashboard_message', data);
+      // 🔧 CORRECCIÓN DE ENDPOINT (06/02/2026): Se agregó el prefijo /amatia para corregir la ruta del API
+      const response = await axiosInstance.post('/amatia/tasklist_api/dashboard_message', data);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error.message);

@@ -9,9 +9,9 @@ export const API_URL = process.env.REACT_APP_API_URL;
 const ADMIN_AUTH_TOKEN = process.env.REACT_APP_ADMIN_AUTH_TOKEN;
 const COMPANY_GROUP = process.env.REACT_APP_COMPANY_GROUP;
 
-// Local
 export const LOCAL_AUTH_TOKEN =
-  ADMIN_AUTH_TOKEN || '$2y$10$HYG/Oj2NUm2wKLquLxct7.CBHw4.B2p3Hs67vimGaWZldraKmwcSa';
+  // ADMIN_AUTH_TOKEN || 
+  '$2y$10$HYG/Oj2NUm2wKLquLxct7.CBHw4.B2p3Hs67vimGaWZldraKmwcSa';
 export const SYSTEM_TOKEN = COMPANY_GROUP || 'cnch';
 
 

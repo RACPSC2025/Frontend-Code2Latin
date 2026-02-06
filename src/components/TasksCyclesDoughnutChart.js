@@ -137,15 +137,15 @@ function TaskCyclesDoughnutChart({
   };
 
   const chartData = {
-    labels: listTaskStatus.map((status) => t(status.label)),
+    labels: Array.isArray(listTaskStatus) ? listTaskStatus.map((status) => t(status.label)) : [],
     datasets: [
       {
         label: t('tasks'),
-        data: listTaskStatus.map((status) => {
+        data: Array.isArray(listTaskStatus) ? listTaskStatus.map((status) => {
           const key = mapStatusToKey(status.value); // ← función auxiliar
           return dataSetTasks[key] ?? 0;
-        }),
-        backgroundColor: listTaskStatus.map((status) => status.color_code),
+        }) : [],
+        backgroundColor: Array.isArray(listTaskStatus) ? listTaskStatus.map((status) => status.color_code) : [],
         borderWidth: 0
       },
       {
@@ -155,11 +155,11 @@ function TaskCyclesDoughnutChart({
       },
       {
         label: t('cycles'),
-        data: listTaskStatus.map((status) => {
+        data: Array.isArray(listTaskStatus) ? listTaskStatus.map((status) => {
           const key = mapStatusToKey(status.value, 'Cycles');
           return dataSetTasks[key] ?? 0;
-        }),
-        backgroundColor: listTaskStatus.map((status) => status.color_code),
+        }) : [],
+        backgroundColor: Array.isArray(listTaskStatus) ? listTaskStatus.map((status) => status.color_code) : [],
         borderWidth: 0
       }
     ]

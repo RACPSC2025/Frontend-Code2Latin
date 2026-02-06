@@ -14,7 +14,8 @@ export const fetchTaskListLevel = createAsyncThunk(
     const levelUrl = level == 1 ? 'list_level1' : `get_level${level}`;
 
     try {
-      const response = await axiosInstance.post(`/tasklist_api/${levelUrl}`, formData);
+      // 🔧 CORRECCIÓN DE ENDPOINT (06/02/2026): Se agregó el prefijo /amatia para corregir la ruta del API
+      const response = await axiosInstance.post(`/amatia/tasklist_api/${levelUrl}`, formData);
       return response?.data;
     } catch (error) {
       return rejectWithValue(error.message);

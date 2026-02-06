@@ -195,10 +195,8 @@ export default function TaskReport() {
       top: 40,
       data: listTaskStatus.map((item) => t(item.label)),
       formatter: function (name) {
-        // ✅ API Real - Cálculo Seguro de Porcentajes (06/02/2026)
         const item = listTaskStatus.find((s) => t(s.label) === name);
-        if (!item || !taskCounts?.tasks) return `${name} 0`;
-        const value = taskCounts.tasks[Number(item.value_number)] ?? 0;
+        const value = taskCounts?.tasks?.[Number(item.value_number)] ?? 0;
         return `${t(item.label)} ${value}`;
       }
     },
@@ -211,8 +209,7 @@ export default function TaskReport() {
         type: 'pie',
         radius: '60%',
         data: listTaskStatus.map((status) => ({
-          // ✅ API Real - Mapeo Seguro (06/02/2026)
-          value: taskCounts?.tasks ? (taskCounts.tasks[Number(status.value_number)] ?? 0) : 0,
+          value: taskCounts?.tasks?.[Number(status.value_number)] ?? 0,
           name: t(status.label),
           label: status.label,
           itemStyle: {

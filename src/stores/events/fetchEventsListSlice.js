@@ -12,7 +12,7 @@ export const fetchEventsList = createAsyncThunk(
   async (formData = {}, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/events_api/dashboard_events',
+        '/amatia/message_center_api/events_api/dashboard_events',
         formData
       );
       return response?.data;

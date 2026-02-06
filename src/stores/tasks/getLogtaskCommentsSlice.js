@@ -13,7 +13,7 @@ export const getLogtaskComments = createAsyncThunk(
     const { logtask_id, formData } = data;
     try {
       const response = await axiosInstance.post(
-        `/tasklist_api/get_logtask_comments/${logtask_id}`,
+        `/amatia/tasklist_api/get_logtask_comments/${logtask_id}`,
         formData
       );
       return response?.data;

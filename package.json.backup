@@ -3,6 +3,7 @@
   "version": "0.3.6",
   "homepage": "ambiental/message-center",
   "private": true,
+  "proxy": "https://ocensacentral.dev.sofacto.info/ambiental/",
   "dependencies": {
     "@apollo/client": "^3.13.1",
     "@emotion/react": "^11.11.1",

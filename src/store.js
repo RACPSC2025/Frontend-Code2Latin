@@ -46,6 +46,7 @@ import fetchTaskListStatusSlice from './stores/tasks/fetchTaskListStatusSlice';
 import fetchTaskListLevelSlice from './stores/tasks/fetchtaskListLevelSlice';
 import fetchTaskTagsSlice from './stores/tasks/fetchTaskTagsSlice';
 import getLogtaskCommentsSlice from './stores/tasks/getLogtaskCommentsSlice';
+import createLogtaskCommentSlice from './stores/tasks/createLogtaskCommentSlice';
 import getLogtaskDetailsSlice from './stores/tasks/getLogtaskDetailsSlice';
 import getPositionUserListSlice from './stores/tasks/getPositionUserListSlice';
 import getProgramsSlice from './stores/tasks/getProgramsSlice';
@@ -117,6 +118,7 @@ export const store = configureStore({
     fetchRisksList: fetchRisksListSlice,
     uploadCommentAttachments: uploadCommentAttachmentsSlice,
     getLogtaskComments: getLogtaskCommentsSlice,
+    createLogtaskComment: createLogtaskCommentSlice,
     fetchArticles: fetchArticlesSlice
   }
 });

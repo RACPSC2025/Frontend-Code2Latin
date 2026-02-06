@@ -8,23 +8,8 @@ export const fileHeader = { headers: { 'Content-Type': 'multipart/form-data' } }
 const instance = axiosConfiguration();
 
 function axiosConfiguration() {
-  /* 🎭 Configuración anterior - Preservado para referencia (Migración: 05/02/2026)
   return axios.create({
     baseURL: API_URL,
-    timeout: 600000,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  */
-  
-  // ✅ Configuración definitiva - Fase 3 (05/02/2026)
-  // En desarrollo: baseURL = '/amatia' (coincide con el proxy)
-  // En producción: baseURL = API_URL (que ya incluye /amatia)
-  const baseURL = process.env.NODE_ENV === 'development' ? '/amatia' : API_URL;
-
-  return axios.create({
-    baseURL: baseURL,
     timeout: 600000,
     headers: {
       'Content-Type': 'application/json'
@@ -78,27 +63,15 @@ instance.interceptors.response.use(
     // Any status codes outside the range of 2xx will trigger this function
     // Handle errors
 
-    // 🔧 DEBUG: Deshabilitado temporalmente para debugging (05/02/2026 23:48)
-    // El redirect automático impedía ver los errores reales
-    /*
-    if (error.response && error.response.status === 401) {
+    // Ajuste temporal para ocensa_ambiental
+    
+    if (error.response.status === 401) {
       const responseData = error.response.data;
       if (responseData && responseData.status === 401 && responseData.redirect_url) {
         // Redirect to the URL specified in the response
         window.location.href = responseData.redirect_url;
       }
     }
-    */
-    
-    // Log detallado del error para debugging (Stringified para lectura fácil)
-    console.error('❌ [Axios Error]', JSON.stringify({
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      url: error.config?.url,
-      method: error.config?.method,
-      headers: error.config?.headers
-    }, null, 2));
     
     return Promise.reject(error);
   }

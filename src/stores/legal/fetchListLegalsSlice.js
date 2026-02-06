@@ -12,7 +12,7 @@ export const fetchListLegals = createAsyncThunk(
   'legal/list_legals',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/message_center_api/legal_api/list_legals`);
+      const response = await axiosInstance.get(`/amatia/message_center_api/legal_api/list_legals`);
       console.log("requirementsResponse");
       console.log(response?.data);
       return response?.data;
@@ -32,7 +32,7 @@ export const fetchListLegalsComplete = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       //console.log(query);
-      const response = await axiosInstance.post('/message_center_api/legal_api/list_legals');
+      const response = await axiosInstance.post('/amatia/message_center_api/legal_api/list_legals');
       //const response = await axiosInstance.post('/message_center_api/legal_api/get_data_requisito');
       ///message_center_api/legal_api/list_legals
       ///message_center_api/legal_api/get_legal_details
@@ -128,7 +128,7 @@ export const evalWithIA = createAsyncThunk(
       const response = await axiosInstance.post(
         //'/tasklegal/legal/invoke',
         //'/message_center_api/tasklegal/legal/get_requirements_ia',
-        '/message_center_api/legal_api/get_requirements_ia',
+        '/amatia/message_center_api/legal_api/get_requirements_ia',
         //'/tasklist_api/get_requirements_ia',
         { dato: text } // ← aquí solo se envía el texto
       );
@@ -151,7 +151,7 @@ export const evalWithIAComplete = createAsyncThunk(
   async (text, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/get_requirements_complete_ia',
+        '/amatia/message_center_api/legal_api/get_requirements_complete_ia',
         { dato: text } // ← aquí solo se envía el texto
       );
       //console.log("TestResponseIA");
@@ -172,8 +172,8 @@ export const generateTasksFromArticlesWithIA = createAsyncThunk(
   async (text, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/get_task_form_articles_ia',
-        { dato: text } 
+        '/amatia/message_center_api/legal_api/get_task_form_articles_ia',
+        { dato: text }
       );
       return response?.data;
     } catch (error) {
@@ -214,7 +214,7 @@ export const evalWithIAresume = createAsyncThunk(
   async (text, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/get_resume_ia',
+        '/amatia/message_center_api/legal_api/get_resume_ia',
         { dato: text }
       );
 
@@ -243,7 +243,7 @@ export const evalWithIAcorrection = createAsyncThunk(
   async (text, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/get_correction_ia',
+        '/amatia/message_center_api/legal_api/get_correction_ia',
         { dato: text }
       );
 
@@ -275,7 +275,7 @@ export const evalAnalysis = createAsyncThunk(
       const response = await axiosInstance.post(
         //'/tasklegal/legal/invoke',
         //'/message_center_api/tasklegal/legal/get_requirements_ia',
-        '/message_center_api/legal_api/get_standard_analysis',
+        '/amatia/message_center_api/legal_api/get_standard_analysis',
         //'/tasklist_api/get_requirements_ia',
         { dato: text } // ← aquí solo se envía el texto
       );
@@ -297,8 +297,8 @@ export const evalpdfIA = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/get_requirements_attachments_ia',
-        formData, 
+        '/amatia/message_center_api/legal_api/get_requirements_attachments_ia',
+        formData,
       );
       //console.log("TestResponseIA");
       //console.log(response?.data);
@@ -323,7 +323,7 @@ export const upload_legal_pdf = createAsyncThunk(
       );
       */
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/upload_pdf_attachments_ia',
+        '/amatia/message_center_api/legal_api/upload_pdf_attachments_ia',
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' }
@@ -342,12 +342,12 @@ export const check_progress_pdf = createAsyncThunk(
   async ({ id_requisito, job_id }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(
-        '/message_center_api/legal_api/check_progress',
-        { 
-          params: { 
-            id_requisito, 
-            job_id 
-          } 
+        '/amatia/message_center_api/legal_api/check_progress',
+        {
+          params: {
+            id_requisito,
+            job_id
+          }
         }
       );
 
@@ -364,7 +364,7 @@ export const get_segmented_text = createAsyncThunk(
   async ({ doc_id }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(
-        '/message_center_api/legal_api/get_segmented_text',
+        '/amatia/message_center_api/legal_api/get_segmented_text',
         { params: { doc_id } }
       );
       return response?.data;
@@ -382,7 +382,7 @@ export const bedrock_query = createAsyncThunk(
   async ({ prompt, sessionId = null }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/bedrock_query',
+        '/amatia/message_center_api/legal_api/bedrock_query',
         {
           prompt,
           sessionId
@@ -406,7 +406,7 @@ export const get_articles_knowledge_base = createAsyncThunk(
   async ({ doc_id = null, filter_type = 'obligations' }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/get_articles_knowledge_base',
+        '/amatia/message_center_api/legal_api/get_articles_knowledge_base',
         {
           doc_id,
           filter_type
@@ -427,9 +427,9 @@ export const evalpdfAnalysisStandard = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        '/message_center_api/legal_api/get_pdfstandard_analysis',
-        //'/tasklist_api/get_requirements_attachments_ia', 
-        formData, 
+        '/amatia/message_center_api/legal_api/get_pdfstandard_analysis',
+        //'/tasklist_api/get_requirements_attachments_ia',
+        formData,
       );
       //console.log("TestResponseIA");
       //console.log(response?.data);
@@ -449,7 +449,7 @@ export const obtenerRequisitoData = createAsyncThunk(
     console.log("ID");
     console.log(id);
   try {
-    const response = await axiosInstance.get(`/tasklegal/legal/get_data_requisito/${id}`);
+    const response = await axiosInstance.get(`/amatia/tasklegal/legal/get_data_requisito/${id}`);
     /*
     const response = await axiosInstance.post(
       "/message_center_api/legal_api/get_data_requisito", // Ruta del backend

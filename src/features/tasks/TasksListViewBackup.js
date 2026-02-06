@@ -37,14 +37,13 @@ import TaskCycleRow from './TaskCycleRow';
 import TaskDetailsSidebar from './TaskDetailsSidebar';
 import { fetchListTaskNew } from '../../stores/tasks/fetchListTaskNewSlice';
 import { fetchLogtaskList } from '../../stores/tasks/fetchLogtaskListSlice';
-import { deleteLogtask } from '../../stores/tasks/deleteLogtaskSlice'; // Importar la acción de eliminación
 import { selectFilterItemValue, setFilter } from '../../stores/filterSlice';
 import TaskDoubleRingChart from '../../components/TaskDoubleRingChart';
 
 const TasksListView = ({ onCreateTask }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  
   // States
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedLogtask, setSelectedLogtask] = useState(null);
@@ -63,7 +62,6 @@ const TasksListView = ({ onCreateTask }) => {
   const taskListLoading = useSelector((state) => state?.fetchListTaskNew?.loading ?? false);
   const logtaskListLoading = useSelector((state) => state?.fetchLogtaskList?.loading ?? false);
   const listTaskStatus = useSelector((state) => selectFilterItemValue(state, 'task', 'task_list_status')) || [];
-  console.log('TasksListView - Estados de tareas:', listTaskStatus);
   const selectedStatus = useSelector((state) => selectFilterItemValue(state, 'task', 'selectedStatus'));
 
   /* 🎭 Data Mock - Bloque preservado (Migración: 05/02/2026)
@@ -83,13 +81,13 @@ const TasksListView = ({ onCreateTask }) => {
   // ✅ API Real - Migración Sofactia (05/02/2026)
   useEffect(() => {
     console.log("🚀 Iniciando carga de tareas reales...");
-
+    
     dispatch(fetchListTaskNew({})).then((data) => {
       if (data?.payload?.messages === 'Success') {
         const tasksData = data?.payload?.data || [];
-
+        
         console.log("📋 Procesando tareas recibidas:", tasksData.length);
-
+        
         // ⚠️ MAPEO CRÍTICO: La API devuelve campos con nombres diferentes
         const mappedTasks = tasksData.map(task => ({
           ...task,
@@ -104,9 +102,9 @@ const TasksListView = ({ onCreateTask }) => {
           // Asegurar que progress sea número
           progress: parseFloat(task.progress) || 0
         }));
-
+        
         setTasks(mappedTasks);
-
+        
         // Auto-seleccionar primera tarea si existe
         if (mappedTasks.length > 0 && !selectedTask) {
           console.log("🎯 Seleccionando primera tarea:", mappedTasks[0].task_title);
@@ -123,7 +121,7 @@ const TasksListView = ({ onCreateTask }) => {
   const handleSelectTask = (task) => {
     setSelectedTask(task);
     setSelectedLogtask(null);
-
+    
     if (task?.logtask_list && task.logtask_list.length > 0) {
       setLogtasks(task.logtask_list);
       setSelectedLogtask(task.logtask_list[0]);
@@ -148,7 +146,7 @@ const TasksListView = ({ onCreateTask }) => {
     };
     const iconColor = isSelected ? '#1a90ff' : (typeColors[type?.toUpperCase()] || '#90a4ae');
     const iconStyle = { fontSize: 24, color: iconColor, transition: 'color 0.2s ease' };
-
+    
     switch (type?.toUpperCase()) {
       case 'ÚNICA': return <UniqueIcon sx={iconStyle} />;
       case 'PERMANENTE': return <PermanentIcon sx={iconStyle} />;
@@ -186,15 +184,7 @@ const TasksListView = ({ onCreateTask }) => {
 
     logtasks.forEach(lt => {
       const status = String(lt.logtask_status || lt.task_status);
-      // Asegurar que sea número
-      let progress = parseFloat(lt.percentage || lt.progress || 0);
-
-      // Si el estado es "Completado" (1), forzamos 100% para el cálculo promedio
-      // esto corrige casos donde la BE envía status:1 pero progress:0
-      if (status === '1') {
-        progress = 100;
-      }
-
+      const progress = lt.percentage || lt.progress || 0;
       totalProgress += progress;
 
       if (status === '1') counts.completed++;
@@ -211,11 +201,11 @@ const TasksListView = ({ onCreateTask }) => {
 
   return (
     <Box sx={{ display: 'flex', height: '100%', width: '100%', bgcolor: '#f5f7f9', overflow: 'hidden' }}>
-
+      
       {/* Sidebar Izquierda - Tareas (Mini Sidebar) */}
       <Box
         sx={{
-          width: isCollapsed ? '70px' : '240px',  // Reducido de 280px a 240px
+          width: isCollapsed ? '70px' : '280px',
           borderRight: '1px solid #e0e0e0',
           bgcolor: 'white',
           display: 'flex',
@@ -242,7 +232,7 @@ const TasksListView = ({ onCreateTask }) => {
             </IconButton>
           </Box>
         </Box>
-
+        
         <List sx={{ p: 0, flex: 1, overflowY: 'auto' }}>
           {taskListLoading ? (
             <Box sx={{ p: 2, textAlign: 'center' }}><CircularProgress size={20} /></Box>
@@ -251,7 +241,7 @@ const TasksListView = ({ onCreateTask }) => {
               const startIndex = (currentPage - 1) * tasksPerPage;
               const endIndex = startIndex + tasksPerPage;
               const paginatedTasks = tasks.slice(startIndex, endIndex);
-
+              
               return paginatedTasks.map((task) => {
                 const isSelected = selectedTask?.id === task.id;
                 return (
@@ -293,12 +283,12 @@ const TasksListView = ({ onCreateTask }) => {
             })()
           )}
         </List>
-
+        
         {/* Paginación */}
         {!isCollapsed && tasks.length > tasksPerPage && (
           <Box sx={{ p: 1, borderTop: '1px solid #f0f0f0', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 0.5 }}>
-            <IconButton
-              size="small"
+            <IconButton 
+              size="small" 
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
               sx={{ width: 24, height: 24 }}
@@ -308,8 +298,8 @@ const TasksListView = ({ onCreateTask }) => {
             <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#455a64', minWidth: 60, textAlign: 'center' }}>
               {currentPage} / {Math.ceil(tasks.length / tasksPerPage)}
             </Typography>
-            <IconButton
-              size="small"
+            <IconButton 
+              size="small" 
               onClick={() => setCurrentPage(Math.min(Math.ceil(tasks.length / tasksPerPage), currentPage + 1))}
               disabled={currentPage === Math.ceil(tasks.length / tasksPerPage)}
               sx={{ width: 24, height: 24 }}
@@ -342,30 +332,30 @@ const TasksListView = ({ onCreateTask }) => {
                 const isActive = selectedStatus === status.value;
                 return (
                   <Tooltip key={status.value} title={t(status.label)}>
-                    <Box
+                    <Box 
                       onClick={() => {
                         const newValue = isActive ? -1 : status.value;
                         dispatch(setFilter({ module: 'task', updatedFilter: { selectedStatus: newValue } }));
                       }}
-                      sx={{
-                        width: isActive ? 16 : 12,
-                        height: isActive ? 16 : 12,
-                        borderRadius: '50%',
-                        bgcolor: status.color_code,
+                      sx={{ 
+                        width: isActive ? 16 : 12, 
+                        height: isActive ? 16 : 12, 
+                        borderRadius: '50%', 
+                        bgcolor: status.color_code, 
                         cursor: 'pointer',
                         border: isActive ? '2px solid #fff' : 'none',
                         outline: isActive ? `2px solid ${status.color_code}` : 'none',
                         transition: 'all 0.2s ease',
                         '&:hover': { transform: 'scale(1.3)' }
-                      }}
+                      }} 
                     />
                   </Tooltip>
                 );
               })}
               {selectedStatus && selectedStatus !== -1 && selectedStatus !== 0 && (
                 <Tooltip title={t('Limpiar filtro')}>
-                  <IconButton
-                    size="small"
+                  <IconButton 
+                    size="small" 
                     onClick={() => dispatch(setFilter({ module: 'task', updatedFilter: { selectedStatus: -1 } }))}
                     sx={{ color: '#90a4ae', ml: 1, p: 0.5 }}
                   >
@@ -379,9 +369,8 @@ const TasksListView = ({ onCreateTask }) => {
           <Button
             variant="contained"
             sx={{
-              bgcolor: '#D9FDD3',  // Color estándar
-              color: '#00a884',
-              '&:hover': { bgcolor: '#c8eac5' },  // Efecto de hover más sutil
+              bgcolor: '#00F57A',
+              '&:hover': { bgcolor: '#00cc76' },
               borderRadius: '8px',
               textTransform: 'none',
               fontWeight: 800,
@@ -469,11 +458,11 @@ const TasksListView = ({ onCreateTask }) => {
               </Box>
 
               <Box display="flex" alignItems="center" gap={3}>
-                <TaskDoubleRingChart
+                <TaskDoubleRingChart 
                   percentage={stats.averageProgress}
                   stats={stats}
-                  size={88}
-                  strokeWidth={9}
+                  size={80}
+                  strokeWidth={8}
                 />
 
                 {/* Estados de los ciclos en formato vertical */}
@@ -502,9 +491,9 @@ const TasksListView = ({ onCreateTask }) => {
               <Box flex="0 0 100px"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>INICIO</Typography></Box>
               <Box flex="0 0 100px"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>CIERRE PROG.</Typography></Box>
               <Box flex="0 0 100px"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>CIERRE REAL</Typography></Box>
-              <Box flex="0 0 80px" textAlign="center"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>OPORT.</Typography></Box>
-              <Box flex="0 0 120px" textAlign="center"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>ACCIONES</Typography></Box>
-              <Box flex="0 0 120px" textAlign="center"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>PROGRESO</Typography></Box>
+              <Box flex="0 0 110px"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>OPORTUNIDAD</Typography></Box>
+              <Box flex="1 1 auto" textAlign="center"><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>ACCIONES</Typography></Box>
+              <Box flex="0 0 140px" textAlign="right" pr={1}><Typography variant="caption" sx={{ fontWeight: 800, color: '#90a4ae', fontSize: '0.65rem' }}>PROGRESO</Typography></Box>
             </Box>
 
             <Box>
@@ -544,8 +533,6 @@ const TasksListView = ({ onCreateTask }) => {
                       task={{
                         ...logtask,
                         task_status: logtask.logtask_status,
-                        logtask_status: logtask.logtask_status, // Asegurar que el estado del logtask esté disponible
-                        status: logtask.logtask_status, // Asegurar que el estado esté disponible como 'status'
                         start_date: logtask.start_date,
                         end_date: logtask.end_date || logtask.finish_date,
                         progress: logtask.percentage || logtask.progress || 0,
@@ -559,21 +546,21 @@ const TasksListView = ({ onCreateTask }) => {
                 })()
               )}
             </Box>
-
+            
             {/* Paginación de Ciclos */}
             {!logtaskListLoading && (() => {
               const filtered = logtasks.filter(lt => {
                 if (!selectedStatus || selectedStatus === -1 || selectedStatus === 0) return true;
                 return String(lt.logtask_status) === String(selectedStatus);
               });
-
+              
               const totalPages = Math.max(1, Math.ceil(filtered.length / cyclesPerPage));
               const isOnlyOnePage = filtered.length <= cyclesPerPage;
-
+              
               return (
                 <Box sx={{ p: 1, borderTop: '1px solid #edf2f4', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 0.5, bgcolor: 'white' }}>
-                  <IconButton
-                    size="small"
+                  <IconButton 
+                    size="small" 
                     onClick={() => setCurrentCyclePage(Math.max(1, currentCyclePage - 1))}
                     disabled={currentCyclePage === 1 || isOnlyOnePage}
                     sx={{ width: 24, height: 24 }}
@@ -583,8 +570,8 @@ const TasksListView = ({ onCreateTask }) => {
                   <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#455a64', minWidth: 60, textAlign: 'center' }}>
                     {currentCyclePage} / {totalPages}
                   </Typography>
-                  <IconButton
-                    size="small"
+                  <IconButton 
+                    size="small" 
                     onClick={() => setCurrentCyclePage(Math.min(totalPages, currentCyclePage + 1))}
                     disabled={currentCyclePage === totalPages || isOnlyOnePage}
                     sx={{ width: 24, height: 24 }}
@@ -600,7 +587,7 @@ const TasksListView = ({ onCreateTask }) => {
 
       {/* Sidebar Derecha - Detalles */}
       <Box sx={{
-        width: isRightSidebarCollapsed ? '40px' : '240px',  // Reducido de 280px a 240px
+        width: isRightSidebarCollapsed ? '40px' : '280px',
         flexShrink: 0,
         bgcolor: 'white',
         borderLeft: '1px solid #e0e0e0',
