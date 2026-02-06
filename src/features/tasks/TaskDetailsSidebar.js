@@ -269,7 +269,7 @@ const TaskDetailsSidebar = ({ selectedTask, statuses }) => {
           </Box>
 
           {/* PROGRESO - DISEÑO ORIGINAL */}
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 1 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
               <Typography sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#263238' }}>
                 Progreso
@@ -282,35 +282,32 @@ const TaskDetailsSidebar = ({ selectedTask, statuses }) => {
               variant="determinate"
               value={taskDetails.progress}
               sx={{
-                height: 8,
-                borderRadius: 4,
+                height: 12,  // Más gruesa
+                borderRadius: 6,
                 bgcolor: '#f0f2f5',
                 '& .MuiLinearProgress-bar': {
-                  bgcolor: taskDetails.progress === 100 ? '#00f57a' : 
-                          taskDetails.progress >= 75 ? '#4caf50' :
-                          taskDetails.progress >= 50 ? '#ff9800' :
-                          taskDetails.progress >= 25 ? '#fbc02d' : '#fb3d61',
-                  borderRadius: 4
+                  bgcolor: '#D9FDD3',  // Color estándar
+                  borderRadius: 6
                 }
               }}
             />
           </Box>
 
-          {/* ✅ SUPERVISOR Y EJECUTOR */}
-          <Box sx={{ mb: 2 }}>
+          {/* ✅ SUPERVISOR Y EJECUTOR - Versión minimalista */}
+          <Box sx={{ mb: 1 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
-              <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#263238' }}>
+              <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#263238' }}>
                 Supervisor:
               </Typography>
-              <Typography sx={{ fontSize: '0.75rem', color: '#90a4ae' }}>
+              <Typography sx={{ fontSize: '0.7rem', color: '#90a4ae' }}>
                 {taskDetails.supervisor || 'No disponible'}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#263238' }}>
+              <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#263238' }}>
                 Ejecutor:
               </Typography>
-              <Typography sx={{ fontSize: '0.75rem', color: '#90a4ae' }}>
+              <Typography sx={{ fontSize: '0.7rem', color: '#90a4ae' }}>
                 {taskDetails.executor || 'No disponible'}
               </Typography>
             </Box>

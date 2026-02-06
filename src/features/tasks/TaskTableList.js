@@ -643,7 +643,7 @@ export default function TaskTableList() {
   }, [actionKeyWords, tasksFilters, tasks, currentStatus, actionStartDate, actionEndDate, actionNameDateField, actionCategory]); // Se ejecuta cuando cambian las variables de los filtros
   
   return (
-    <Box sx={{ height: 'calc(100vh - 300px)' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {taskListLoading ? (
         <Box
           sx={{

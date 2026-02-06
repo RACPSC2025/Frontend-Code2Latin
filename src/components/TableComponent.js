@@ -453,8 +453,7 @@ export default function TableComponent({
   return (
     <Box
       sx={{
-        //height: '100%',
-        height: '100%',
+        height: '600px', // Altura fija para optimizar la visualización
         width: '100%',
         display: 'flex',
         flexDirection: 'column'
@@ -483,7 +482,7 @@ export default function TableComponent({
         </Box>
       )}
 
-      <div className="flex items-center gap-2 mb-2 flex-row-reverse">
+      <div className="flex items-center gap-2 mb-1 flex-row-reverse">
         {/*
         <Button variant="outlined" color="primary" onClick={exportCSV}>
           {t("csv_export")}
@@ -496,7 +495,7 @@ export default function TableComponent({
       </div>
 
       {/* Paginador arriba */}
-      <Box sx={{ flexShrink: 0, mb: 2 }}>
+      <Box sx={{ flexShrink: 0, mb: 1 }}>
         <TablePaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
