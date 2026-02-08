@@ -3,6 +3,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import './TaskCalender.css'; // Estilos modernos para el calendario
 
 export default function TaskCalender({
   events = [],
@@ -27,18 +28,18 @@ export default function TaskCalender({
   };
 
   const fullCalendarHeaderToolbar = {
-    start: 'title', // will normally be on the left. if RTL, will be on the right
-    center: '',
-    end: 'todayCustomButton prevCustomButton,nextCustomButton' // will normally be on the right. if RTL, will be on the left
+    start: 'prevCustomButton', // Botón de anterior a la izquierda
+    center: 'todayCustomButton', // Botón de hoy en el centro
+    end: 'nextCustomButton' // Botón de siguiente a la derecha
   };
 
   const fullCalendarCustomButtons = {
     prevCustomButton: {
-      text: t('Previous'),
+      text: '◀', // Flecha izquierda Unicode
       click: () => changeFullCalendarAndSelectDate('prev')
     },
     nextCustomButton: {
-      text: t('Next'),
+      text: '▶', // Flecha derecha Unicode
       click: () => changeFullCalendarAndSelectDate('next')
     },
     todayCustomButton: {
@@ -57,7 +58,7 @@ export default function TaskCalender({
     }
   }, [language, calendarRef]);
 
-  
+
   useEffect(() => {
     console.log('Events:', events); // Verifica el contenido de events
     if (events && events.length > 0) {

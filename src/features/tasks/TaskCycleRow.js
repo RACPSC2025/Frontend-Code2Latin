@@ -60,28 +60,26 @@ const TaskCycleRow = ({ task, index, statuses, onSelect, isSelected }) => {
     }
   };
 
-  // ✅ OBTENER EL COLOR DEL ESTADO DEL CICLO - Usar directamente el estado del ciclo
-  const getStatusColor = (statusValue, statusList) => {
-    if (!statusList || !Array.isArray(statusList)) return '#90a4ae';
-    
-    // Manejar posibles valores nulos o indefinidos
-    if (statusValue === null || statusValue === undefined) return '#90a4ae';
-    
-    // Asegurar que el valor del estado sea un string para la comparación
-    const statusStr = String(statusValue);
-    
-    // Buscar el estado con comparación flexible (convertir ambos a string)
-    const status = statusList.find(s => {
-      const sValue = s.value !== null && s.value !== undefined ? String(s.value) : '';
-      return sValue === statusStr;
-    });
-    
-    // Si encontramos el estado, devolver su color, de lo contrario gris por defecto
-    return status ? status.color_code : '#90a4ae';
+  // ✅ OBTENER EL COLOR DEL ESTADO DEL CICLO (basado en lógica de dashboard)
+  const getCycleStatusColor = (statusValue) => {
+    // Asegurarse de que el statusValue es un número o una cadena convertible
+    const numericStatusValue = Number(statusValue);
+    switch (numericStatusValue) {
+      case 1: // Completado
+        return '#00f57a';
+      case 2: // En Progreso
+        return '#1a90ff';
+      case 3: // Abierto
+        return '#fbc02d';
+      case 4: // Vencido
+        return '#fb3d61';
+      default:
+        return '#90a4ae'; // Gris por defecto
+    }
   };
 
   // Usar el estado del logtask directamente, con fallback a task_status
-  const cycleStatusColor = getStatusColor(task.logtask_status || task.task_status || task.status, statuses);
+  const cycleStatusColor = getCycleStatusColor(task.logtask_status || task.task_status || task.status);
 
   return (
     <>

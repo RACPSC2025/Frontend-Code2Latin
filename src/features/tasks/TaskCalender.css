@@ -1,0 +1,183 @@
+/* Estilos modernos para el calendario */
+.fc {
+  --fc-border-color: #e0e0e0;
+  --fc-non-business-color: #fafafa;
+  --fc-page-bg-color: #ffffff;
+  --fc-event-border-color: #1a90ff;
+  --fc-today-bg-color: #f5f9ff;
+  --fc-highlight-color: #e3f2fd;
+}
+
+/* Encabezado del calendario */
+.fc-toolbar {
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.fc-toolbar-title {
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  color: #263238 !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Botones de navegación modernos */
+.fc-prev-button,
+.fc-next-button,
+.fc-today-button {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  color: #1a90ff !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.fc-prev-button:hover,
+.fc-next-button:hover,
+.fc-today-button:hover {
+  background: #f5f9ff !important;
+  border-color: #bbdefb !important;
+  color: #1976d2 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(26, 144, 255, 0.2) !important;
+}
+
+.fc-today-button {
+  background: #1a90ff !important;
+  color: white !important;
+}
+
+.fc-today-button:hover {
+  background: #1976d2 !important;
+  border-color: #1565c0 !important;
+  color: white !important;
+}
+
+/* Encabezados de día */
+.fc-col-header-cell {
+  background: #f8f9fa;
+  border: none !important;
+  padding: 12px 0 !important;
+}
+
+.fc-col-header-cell-cushion {
+  font-weight: 700 !important;
+  color: #546e7a !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Celdas de días */
+.fc-day {
+  border: 1px solid #f0f0f0 !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.fc-day:hover {
+  background-color: #f8f9fa !important;
+}
+
+.fc-day.fc-today {
+  background-color: #f5f9ff !important;
+}
+
+.fc-day.fc-today .fc-daygrid-day-number {
+  background: #1a90ff !important;
+  color: white !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  margin: 4px !important;
+}
+
+/* Números de día */
+.fc-daygrid-day-number {
+  padding: 4px !important;
+  font-weight: 600 !important;
+  color: #263238 !important;
+  margin: 4px !important;
+}
+
+/* Eventos */
+.fc-daygrid-event {
+  margin: 2px !important;
+  padding: 4px 6px !important;
+  border-radius: 6px !important;
+  border: none !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.fc-daygrid-event:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Contenedor de eventos */
+.fc-daygrid-event-harness {
+  margin: 2px !important;
+}
+
+/* Vista de mes */
+.fc-dayGridMonth-view {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0 !important;
+}
+
+/* Contenedor principal */
+.fc .fc-view-container {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* Popover de eventos */
+.fc-popover {
+  border-radius: 8px !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.fc-popover-header {
+  background: #f5f5f5 !important;
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+}
+
+/* Botón de "más" */
+.fc-daygrid-more-link {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  color: #1a90ff !important;
+  background: rgba(26, 144, 255, 0.1) !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  margin: 2px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.fc-daygrid-more-link:hover {
+  background: rgba(26, 144, 255, 0.2) !important;
+  color: #1976d2 !important;
+}

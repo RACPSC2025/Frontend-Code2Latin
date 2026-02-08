@@ -121,7 +121,7 @@ export const TaskDoubleRingChart = ({
         />
         {percentage > 0 && (
           <circle
-            stroke={percentage === 100 ? '#00f57a' : '#9c27b0'}  // Púrpura corporativo en lugar de negro/gris
+            stroke={percentage === 100 ? '#00796b' : '#9c27b0'}  // Púrpura vibrante o verde azulado oscuro
             fill="transparent"
             r={innerRadius}
             cx={center}

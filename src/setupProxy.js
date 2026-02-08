@@ -1,7 +1,7 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 module.exports = function (app) {
-  // ✅ Configuración Fase 6 (06/02/2026) - Corrección de redirecciones infinitas
+  // Configuración (06/02/2026) - Corrección de redirecciones infinitas
   // Estrategia: Proxy directo sin reescritura recursiva
 
   const proxyConfig = {
@@ -12,8 +12,7 @@ module.exports = function (app) {
 
     // Log de lo que enviamos al servidor
     onProxyReq: (proxyReq, req, res) => {
-      // ⚠️ IMPORTANT: Limpiar headers "ruidosos" que pueden bloquear la petición (WAF)
-      // El script verify_endpoint.js funciona sin estos headers, así que imitamos ese comportamiento
+      //Limpiar headers "ruidosos" que pueden bloquear la petición (WAF)
       proxyReq.removeHeader('Origin');
       proxyReq.removeHeader('Referer');
       proxyReq.removeHeader('Cookie');
@@ -30,6 +29,6 @@ module.exports = function (app) {
   };
 
   // Intercepta todas las rutas que comienzan con /amatia
-  // IMPORTANTE: No usar pathRewrite aquí para evitar redirecciones infinitas
+  // No usar pathRewrite aquí para evitar redirecciones infinitas
   app.use('/amatia', createProxyMiddleware(proxyConfig));
 };
